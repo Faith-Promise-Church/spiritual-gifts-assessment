@@ -1542,12 +1542,64 @@ async function finishAssessment() {
 }
 
 async function generateAISummary(scores) {
-    // This would need to be implemented server-side to protect API keys
-    // For now, return a placeholder
+    console.log('Requesting AI summary...');
+    
+    const aiRequestData = {
+        requestType: 'aiSummary',
+        spiritualGiftPrimary: scores.gifts[0] ? scores.gifts[0][0] : '',
+        spiritualGiftSecondary: scores.gifts[1] ? scores.gifts[1][0] : '',
+        spiritualGiftTertiary: scores.gifts[2] ? scores.gifts[2][0] : '',
+        discPrimary: userInfo.discPrimary,
+        discSecondary: userInfo.discSecondary,
+        campus: userInfo.campus,
+        skillAreas: scores.skills.join(', ')
+    };
+    
+    try {
+        // Create URL-encoded form data
+        const formBody = Object.keys(aiRequestData)
+            .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(aiRequestData[key]))
+            .join('&');
+        
+        console.log('Requesting AI summary from Google Apps Script...');
+        
+        const response = await fetch(GOOGLE_SCRIPT_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: formBody,
+            redirect: 'follow'
+        });
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const responseText = await response.text();
+        console.log('AI response:', responseText);
+        
+        const result = JSON.parse(responseText);
+        
+        if (result.success && result.data && result.data.aiSummary) {
+            return result.data.aiSummary;
+        } else {
+            console.error('AI generation failed:', result.message);
+            return generateFallbackSummary(scores);
+        }
+        
+    } catch (error) {
+        console.error('Error requesting AI summary:', error);
+        return generateFallbackSummary(scores);
+    }
+}
+
+function generateFallbackSummary(scores) {
+    // Fallback summary if AI fails
     const primaryGift = scores.gifts[0] ? scores.gifts[0][0] : 'Serving';
     const discProfile = `${userInfo.discPrimary}${userInfo.discSecondary}`;
     
-    return `Based on your assessment, your primary spiritual gift is ${primaryGift}, combined with your ${discProfile} DISC profile. This unique combination suggests you would thrive in ministry opportunities that allow you to ${primaryGift.toLowerCase()} while leveraging your natural ${userInfo.discPrimary === 'D' ? 'decisive leadership' : userInfo.discPrimary === 'I' ? 'relational influence' : userInfo.discPrimary === 'S' ? 'steady support' : 'detailed organization'} style. Consider exploring opportunities in areas that align with both your spiritual calling and personality strengths.`;
+    return `Your primary spiritual gift of ${primaryGift}, combined with your ${discProfile} DISC profile, creates a unique ministry opportunity. ${userInfo.discPrimary === 'D' ? 'Your decisive leadership style' : userInfo.discPrimary === 'I' ? 'Your relational influence' : userInfo.discPrimary === 'S' ? 'Your steady support' : 'Your detailed organization'} pairs well with ${primaryGift.toLowerCase()} ministry. Consider exploring opportunities that leverage both your spiritual calling and personality strengths at Faith Promise.`;
 }
 
 function displayResults(scores, aiSummary) {
