@@ -1,0 +1,1769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spiritual Gifts Assessment</title>
+<link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+}
+
+body {
+font-family: 'Kumbh Sans', sans-serif;
+background: linear-gradient(135deg, #6F878D 0%, #445557 100%);
+background-attachment: fixed;
+min-height: 100vh;
+padding: 60px 20px;
+}
+
+.container {
+max-width: 800px;
+margin: 0 auto;
+background: white;
+border-radius: 20px;
+box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+overflow: hidden;
+width: 100%;
+}
+
+.header {
+background: linear-gradient(135deg, #445557 0%, #2A3536 100%);
+color: white;
+padding: 30px;
+text-align: center;
+width: 100%;
+margin: 0;
+}
+
+.header h1 {
+font-size: 2.5em;
+margin-bottom: 10px;
+font-weight: 800;
+font-family: 'Kumbh Sans', sans-serif;
+}
+
+.header p {
+font-size: 1.1em;
+opacity: 0.9;
+}
+
+.content {
+padding: 30px;
+}
+
+/* User form styles */
+.user-form {
+background: #A8CBD1;
+border-radius: 15px;
+padding: 25px;
+margin-bottom: 30px;
+}
+
+.user-form .form-group {
+margin-bottom: 15px;
+}
+
+.user-form label {
+display: block;
+margin-bottom: 5px;
+font-weight: 600;
+color: #445557;
+}
+
+.user-form input,
+.user-form select {
+width: 100%;
+padding: 10px;
+border: 2px solid #CDCDCD;
+border-radius: 10px;
+font-size: 1em;
+color: #445557;
+}
+
+.user-form button {
+margin-top: 10px;
+width: 100%;
+}
+
+.intro {
+text-align: center;
+margin-bottom: 30px;
+display: none;
+}
+
+.intro h2 {
+color: #445557;
+margin-bottom: 15px;
+font-weight: 600;
+font-family: 'Kumbh Sans', sans-serif;
+font-size: 1.5em;
+}
+
+.intro p {
+color: #445557;
+line-height: 1.6;
+margin-bottom: 20px;
+}
+
+.start-btn {
+background: linear-gradient(135deg, #6F878D, #445557);
+color: white;
+border: none;
+padding: 12px 30px;
+border-radius: 25px;
+cursor: pointer;
+font-size: 1em;
+font-weight: 600;
+transition: all 0.3s ease;
+text-transform: uppercase;
+letter-spacing: 1px;
+font-family: 'Kumbh Sans', sans-serif;
+}
+
+.start-btn:hover {
+transform: translateY(-2px);
+box-shadow: 0 10px 20px rgba(111, 135, 141, 0.3);
+}
+
+.question-container {
+display: none;
+animation: fadeIn 0.5s ease-in;
+}
+
+.question-container.active {
+display: block;
+}
+
+@keyframes fadeIn {
+from { opacity: 0; transform: translateY(20px); }
+to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shake {
+0%, 100% { transform: translateX(0); }
+25% { transform: translateX(-5px); }
+75% { transform: translateX(5px); }
+}
+
+@keyframes slideIn {
+from { transform: translateX(100%); opacity: 0; }
+to { transform: translateX(0); opacity: 1; }
+}
+
+.question {
+background: #A8CBD1;
+border-radius: 15px;
+padding: 25px;
+margin-bottom: 20px;
+margin-top: 30px;
+border-left: 5px solid #6F878D;
+word-wrap: break-word;
+}
+
+.question h3 {
+color: #445557;
+margin-bottom: 20px;
+font-size: 1.2em;
+font-weight: 600;
+font-family: 'Kumbh Sans', sans-serif;
+}
+
+.question-number {
+background: #6F878D;
+color: white;
+width: 30px;
+height: 30px;
+border-radius: 50%;
+display: inline-flex;
+align-items: center;
+justify-content: center;
+font-weight: bold;
+margin-right: 15px;
+font-size: 0.9em;
+}
+
+.options {
+display: grid;
+gap: 10px;
+}
+
+.option {
+background: white;
+border: 2px solid #CDCDCD;
+border-radius: 10px;
+padding: 15px;
+cursor: pointer;
+transition: all 0.3s ease;
+display: flex;
+align-items: flex-start;
+color: #445557;
+word-wrap: break-word;
+}
+
+.option:hover {
+border-color: #6F878D;
+transform: translateX(5px);
+box-shadow: 0 5px 15px rgba(111, 135, 141, 0.2);
+}
+
+.option.selected {
+border-color: #6F878D;
+background: linear-gradient(135deg, #6F878D, #445557);
+color: white;
+}
+
+.option input[type="checkbox"] {
+margin-right: 12px;
+transform: scale(1.2);
+margin-top: 2px;
+}
+
+.max-selections-notice {
+background: #f39c12;
+color: white;
+padding: 10px 15px;
+border-radius: 8px;
+margin-bottom: 15px;
+font-size: 0.9em;
+text-align: center;
+display: none;
+}
+
+.progress-bar {
+background: #CDCDCD;
+height: 8px;
+border-radius: 4px;
+margin: 20px 0;
+overflow: hidden;
+}
+
+.progress-fill {
+background: linear-gradient(135deg, #6F878D, #657B64);
+height: 100%;
+border-radius: 4px;
+transition: width 0.3s ease;
+width: 0%;
+}
+
+.progress-text {
+text-align: center;
+color: #445557;
+font-size: 0.9em;
+margin-top: 5px;
+font-weight: 500;
+}
+
+.option.disabled {
+border-color: #CDCDCD;
+background: #f5f5f5;
+color: #999;
+cursor: not-allowed;
+transform: none;
+box-shadow: none;
+}
+
+.option.disabled:hover {
+border-color: #CDCDCD;
+transform: none;
+box-shadow: none;
+}
+
+.option.first-selection {
+border-color: #6F878D;
+background: linear-gradient(135deg, #6F878D, #445557);
+color: white;
+opacity: 0.4;
+}
+
+.option.second-selection {
+border-color: #6F878D;
+background: linear-gradient(135deg, #6F878D, #445557);
+color: white;
+}
+
+.navigation {
+display: flex;
+justify-content: center;
+align-items: center;
+margin-top: 30px;
+}
+
+.navigation.hidden {
+display: none;
+}
+
+.btn {
+background: linear-gradient(135deg, #6F878D, #445557);
+color: white;
+border: none;
+padding: 12px 30px;
+border-radius: 25px;
+cursor: pointer;
+font-size: 1em;
+font-weight: 600;
+transition: all 0.3s ease;
+text-transform: uppercase;
+letter-spacing: 1px;
+font-family: 'Kumbh Sans', sans-serif;
+}
+
+.btn:hover {
+transform: translateY(-2px);
+box-shadow: 0 10px 20px rgba(111, 135, 141, 0.3);
+}
+
+.btn:disabled {
+opacity: 0.5;
+cursor: not-allowed;
+transform: none;
+box-shadow: none;
+}
+
+.btn-secondary {
+background: #657B64;
+}
+
+.results {
+display: none;
+text-align: center;
+}
+
+.results.show {
+display: block;
+animation: fadeIn 0.5s ease-in;
+}
+
+.result-card {
+background: linear-gradient(135deg, #6F878D, #445557);
+color: white;
+border-radius: 20px;
+padding: 40px;
+margin: 30px 0;
+text-align: left;
+word-wrap: break-word;
+}
+
+.result-header {
+text-align: center;
+margin-bottom: 30px;
+}
+
+.result-type {
+font-size: 2.5em;
+font-weight: bold;
+margin-bottom: 10px;
+}
+
+.result-name {
+font-size: 1.5em;
+margin-bottom: 20px;
+opacity: 0.9;
+}
+
+.gifts-list {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+gap: 15px;
+margin-bottom: 30px;
+}
+
+.gift-item {
+background: rgba(255,255,255,0.1);
+border-radius: 10px;
+padding: 15px;
+text-align: center;
+}
+
+.gift-rank {
+font-size: 0.8em;
+text-transform: uppercase;
+opacity: 0.7;
+margin-bottom: 5px;
+}
+
+.gift-name {
+font-size: 1.1em;
+font-weight: 600;
+margin-bottom: 5px;
+}
+
+.gift-score {
+font-size: 0.9em;
+opacity: 0.8;
+}
+
+.ai-summary {
+background: rgba(255,255,255,0.1);
+border-radius: 15px;
+padding: 25px;
+line-height: 1.6;
+font-size: 1em;
+}
+
+.ai-summary h4 {
+margin-bottom: 15px;
+font-size: 1.2em;
+}
+
+.loading {
+text-align: center;
+padding: 40px;
+}
+
+.spinner {
+border: 4px solid #f3f3f3;
+border-top: 4px solid #6F878D;
+border-radius: 50%;
+width: 40px;
+height: 40px;
+animation: spin 1s linear infinite;
+margin: 0 auto 20px;
+}
+
+@keyframes spin {
+0% { transform: rotate(0deg); }
+100% { transform: rotate(360deg); }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+body {
+padding: 20px 10px;
+}
+
+.container {
+margin: 0;
+border-radius: 15px;
+}
+
+.header {
+padding: 20px 15px;
+}
+
+.header h1 {
+font-size: 1.8rem;
+margin-bottom: 8px;
+}
+
+.header p {
+font-size: 0.95rem;
+}
+
+.content {
+padding: 20px 15px;
+}
+
+.user-form {
+padding: 20px;
+margin-bottom: 20px;
+}
+
+.user-form input,
+.user-form select {
+padding: 12px;
+font-size: 1rem;
+}
+
+.question {
+padding: 20px 15px;
+margin-bottom: 15px;
+margin-top: 20px;
+}
+
+.question h3 {
+font-size: 1.1rem;
+line-height: 1.4;
+margin-bottom: 15px;
+}
+
+.question-number {
+width: 25px;
+height: 25px;
+font-size: 0.8rem;
+margin-right: 10px;
+flex-shrink: 0;
+}
+
+.option {
+padding: 12px;
+font-size: 0.9rem;
+line-height: 1.3;
+margin-bottom: 8px;
+}
+
+.option input[type="checkbox"] {
+margin-right: 10px;
+transform: scale(1.1);
+}
+
+.navigation {
+flex-direction: column;
+gap: 10px;
+margin-top: 20px;
+}
+
+.btn {
+width: 100%;
+padding: 14px 20px;
+font-size: 0.9rem;
+margin: 0;
+}
+
+.result-card {
+padding: 25px 20px;
+margin: 20px 0;
+}
+
+.result-type {
+font-size: 2rem;
+margin-bottom: 8px;
+}
+
+.result-name {
+font-size: 1.3rem;
+margin-bottom: 15px;
+}
+
+.gifts-list {
+grid-template-columns: 1fr;
+gap: 10px;
+margin-bottom: 20px;
+}
+
+.ai-summary {
+padding: 20px;
+font-size: 0.9rem;
+}
+
+.intro h2 {
+font-size: 1.4rem;
+margin-bottom: 12px;
+}
+
+.intro p {
+font-size: 0.9rem;
+line-height: 1.5;
+margin-bottom: 15px;
+}
+
+.progress-text {
+font-size: 0.85rem;
+}
+}
+
+/* Extra small screens */
+@media (max-width: 480px) {
+.header h1 {
+font-size: 1.6rem;
+}
+
+.question h3 {
+font-size: 1rem;
+}
+
+.option {
+font-size: 0.85rem;
+padding: 10px;
+}
+
+.result-type {
+font-size: 1.8rem;
+}
+
+.result-name {
+font-size: 1.2rem;
+}
+
+.ai-summary {
+font-size: 0.85rem;
+}
+}
+
+/* Large screens */
+@media (min-width: 1200px) {
+.container {
+max-width: 900px;
+}
+}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>Spiritual Gifts Assessment</h1>
+<p>Discover Your God-Given Gifts</p>
+</div>
+<div class="content">
+<!-- User Info Form -->
+<div class="user-form" id="userForm">
+<form id="userInfoForm">
+<div class="form-group">
+<label for="firstName">First Name</label>
+<input type="text" id="firstName" name="firstName" required>
+</div>
+<div class="form-group">
+<label for="lastName">Last Name</label>
+<input type="text" id="lastName" name="lastName" required>
+</div>
+<div class="form-group">
+<label for="phone">Phone</label>
+<input type="tel" id="phone" name="phone" placeholder="xxx-xxx-xxxx" required>
+</div>
+<div class="form-group">
+<label for="discPrimary">DISC Primary</label>
+<select id="discPrimary" name="discPrimary" required onchange="updateDiscSecondary()">
+<option value="">Select Primary</option>
+<option value="D">D - Dominance</option>
+<option value="I">I - Influence</option>
+<option value="S">S - Steadiness</option>
+<option value="C">C - Conscientiousness</option>
+</select>
+</div>
+<div class="form-group">
+<label for="discSecondary">DISC Secondary</label>
+<select id="discSecondary" name="discSecondary" required>
+<option value="">Select Secondary</option>
+<option value="D">D - Dominance</option>
+<option value="I">I - Influence</option>
+<option value="S">S - Steadiness</option>
+<option value="C">C - Conscientiousness</option>
+</select>
+</div>
+<div class="form-group">
+<label for="campus">My Campus</label>
+<select id="campus" name="campus" required>
+<option value="">Select Campus</option>
+<option value="Pellissippi">Pellissippi</option>
+<option value="Anderson">Anderson</option>
+<option value="Blount">Blount</option>
+<option value="Bristol">Bristol</option>
+<option value="East Knox">East Knox</option>
+<option value="Farragut">Farragut</option>
+<option value="North Knox">North Knox</option>
+<option value="Online">Online</option>
+<option value="Promesa de Fe">Promesa de Fe</option>
+</select>
+</div>
+<button type="button" class="btn" onclick="handleFormSubmission()">Continue</button>
+</form>
+</div>
+
+<div class="intro" id="intro">
+<h2>Welcome to the Spiritual Gifts Assessment</h2>
+<p>This assessment will help you discover your God-given spiritual gifts and how you can use them to serve in ministry.</p>
+<p><strong>Instructions:</strong> For each question, you may select up to <strong>TWO options</strong> that best describe you. Select the one that most describes you first. You may choose only one option if you don't see two that apply to you.</p>
+<p>There are 40 questions covering spiritual gifts and practical skills. This will take approximately 10-15 minutes to complete.</p>
+<button class="start-btn" onclick="startAssessment()">Start Assessment</button>
+</div>
+
+<div class="question-container" id="questionContainer">
+<div class="progress-bar">
+<div class="progress-fill" id="progressFill"></div>
+</div>
+<div class="progress-text" id="progressText">Question 1 of 40</div>
+
+<div class="max-selections-notice" id="maxSelectionsNotice">
+You can select up to 2 options per question. Please unselect one option before selecting another.
+</div>
+
+<div class="question" id="currentQuestion">
+<!-- Questions will be inserted here -->
+</div>
+<div class="navigation" id="navigation">
+<button class="btn" id="nextBtn" onclick="nextQuestion()" style="display: none;">Next</button>
+</div>
+</div>
+
+<div class="results" id="results">
+<div id="loadingDiv" class="loading">
+<div class="spinner"></div>
+<h3>Generating Your Personalized Assessment...</h3>
+<p>We're analyzing your responses and creating a custom ministry recommendation based on your spiritual gifts and DISC profile.</p>
+</div>
+
+<div id="finalResults" style="display: none;">
+<h2>Your Spiritual Gifts Results</h2>
+<div class="result-card" id="resultCard">
+<!-- Results will be inserted here -->
+</div>
+<div style="text-align: center; margin-top: 30px;">
+<button class="btn" onclick="restartAssessment()">Take Assessment Again</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+
+<script>
+// Spiritual Gifts Questions (32 main questions from the document)
+const spiritualGiftsQuestions = [
+// Q1-Q32 from your document
+{
+text: "Which of these sounds most like you?",
+options: [
+{ text: "I naturally find myself caring for people's emotional or spiritual health.", gift: "Shepherding" },
+{ text: "I can usually sense when something is spiritually 'off,' even if no one says anything.", gift: "Discernment" },
+{ text: "I feel a strong pull to speak truth, even when it might be hard to hear.", gift: "Prophecy" },
+{ text: "None of these apply to me.", gift: "None" }
+]
+},
+{
+text: "Which of these is most true of you?",
+options: [
+{ text: "I often find myself trusting God even when the circumstances don't make sense.", gift: "Faith" },
+{ text: "I love finding ways to give money or resources to causes I believe in.", gift: "Generosity" },
+{ text: "I have a gut instinct when someone is being fake or hiding something.", gift: "Discernment" },
+{ text: "None of these apply to me.", gift: "None" }
+]
+},
+{
+text: "Which of these feels most like you?",
+options: [
+{ text: "I come alive when I'm sharing Jesus with someone who doesn't yet believe.", gift: "Evangelism" },
+{ text: "I naturally look for ways to cheer people on and help them move forward.", gift: "Exhortation" },
+{ text: "While ministering or praying, I've witnessed God move in ways that defy natural explanation.", gift: "Miracles" },
+{ text: "None of these apply to me.", gift: "None" }
+]
+},
+{
+text: "Which of these would you most likely say?",
+options: [
+{ text: "I'm comfortable making decisions and galvanizing people to pursue a goal.", gift: "Leadership" },
+{ text: "I love starting new things—especially if it means reaching new people.", gift: "Apostleship" },
+{ text: "When challenges hit, I tend to believe God will come through—somehow, some way.", gift: "Faith" },
+{ text: "None of these apply to me.", gift: "None" }
+]
+},
+{
+text: "Which one best describes you?",
+options: [
+{ text: "I get excited when I get to talk to someone about Jesus.", gift: "Evangelism" },
+{ text: "In prayer, I've found myself speaking or worshiping in a Spirit-led language I never learned.", gift: "Tongues" },
+{ text: "I feel called to give up comfort or resources, even when it's costly, to meet someone's need.", gift: "Sacrificial Gifts" },
+{ text: "None of these apply to me.", gift: "None" }
+]
+},
+{
+text: "Which one feels most true of you?",
+options: [
+{ text: "I am honored to give others what they want at the expense of what I want—even when no one notices.", gift: "Sacrificial Gifts" },
+{ text: "I love spending time with people who are hurting or overlooked.", gift: "Mercy" },
+{ text: "Even in impossible situations, I feel an unshakable confidence that God is working.", gift: "Faith" },
+{ text: "None of these apply to me.", gift: "None" }
+]
+},
+{
+text: "Which of these do you relate to most?",
+options: [
+{ text: "I like to lead, but I especially love building leaders around me.", gift: "Apostleship" },
+{ text: "I feel drawn to pray for physical healing and have faith that God can restore health.", gift: "Healing" },
+{ text: "I feel deeply responsible for helping people understand and apply the Bible.", gift: "Teaching" },
+{ text: "None of these apply to me.", gift: "None" }
+]
+},
+{
+text: "Which one sounds most like you?",
+options: [
+{ text: "When I read or listen, I often get a strong sense of what God is really saying.", gift: "Prophecy" },
+{ text: "I regularly feel drawn to pray when someone is struggling physically.", gift: "Healing" },
+{ text: "I've experienced praying in a spiritual language that I didn't consciously choose.", gift: "Tongues" },
+{ text: "None of these apply to me.", gift: "None" }
+]
+},
+{
+text: "What do you find yourself doing most naturally?",
+options: [
+{ text: "I help people feel comfortable and included, especially in new environments.", gift: "Shepherding" },
+{ text: "I'm often the one who spots problems and offers a simple fix.", gift: "Serving" },
+{ text: "I gravitate toward giving when I know it'll meet a real need.", gift: "Generosity" },
+{ text: "None of these apply to me.", gift: "None" }
+]
+},
+{
+text: "Which of these do you think someone would likely say about you?",
+options: [
+{ text: "You're really good at explaining things in a way that just makes sense.", gift: "Teaching" },
+{ text: "You're always thinking about how to make someone's day better.", gift: "Mercy" },
+{ text: "You just know when something deeper is going on with someone.", gift: "Discernment" },
+{ text: "None of these apply to me.", gift: "None" }
+]
+},
+{
+text: "Which of these do you find most true about yourself?",
+options: [
+{ text: "I often feel compelled to pray when someone is sick or in pain.", gift: "Healing" },
+{ text: "I'm often the one asking, 'What if we tried something new?'", gift: "Apostleship" },
+{ text: "I find myself praying with boldness for God to do something miraculous.", gift: "Miracles" },
+{ text: "None of these apply to me.", gift: "None" }
+]
+},
+{
+text: "What feels most natural for you?",
+options: [
+{ text: "I regularly feel called to encourage people with specific truth—even when it's uncomfortable.", gift: "Prophecy" },
+{ text: "I like to be the person who makes things happen behind the scenes.", gift: "Serving" },
+{ text: "I think about how to use my money or resources to make a spiritual impact.", gift: "Generosity" },
+{ text: "None of these apply to me.", gift: "None" }
+]
+},
+{
+text: "Which of these best describes your instincts?",
+options: [
+{ text: "When someone is physically sick, I'm quick to pray for God's healing power.", gift: "Healing" },
+{ text: "I find joy in encouraging people to take bold steps in their walk with God—especially when they feel stuck.", gift: "Exhortation" },
+{ text: "I've seen God move in a way that only He could—especially in desperate moments.", gift: "Miracles" },
+{ text: "None of these apply to me.", gift: "None" }
+]
+},
+{
+text: "What would your friends say about you?",
+options: [
+{ text: "You're always looking out for people who feel left out.", gift: "Mercy" },
+{ text: "You're not afraid to step up and lead when something needs to be done.", gift: "Leadership" },
+{ text: "You're always looking for ways to give, even when no one's asking.", gift: "Generosity" },
+{ text: "None of these apply to me.", gift: "None" }
+]
+},
+{
+text: "Which of these most reflects you?",
+options: [
+{ text: "I've felt deeply stirred to pray or speak in words I didn't fully understand.", gift: "Tongues" },
+{ text: "I believe God has uniquely wired me to reach people who haven't heard the gospel.", gift: "Evangelism" },
+{ text: "I give something up so others can experience something better.", gift: "Sacrificial Gifts" },
+{ text: "None of these apply to me.", gift: "None" }
+]
+},
+{
+text: "How do you tend to approach challenges?",
+options: [
+{ text: "I rely on prayer and trust that God's going to show up.", gift: "Faith" },
+{ text: "I pull people together and help them find a way forward.", gift: "Leadership" },
+{ text: "I listen closely for God's direction and speak what I believe He's saying.", gift: "Prophecy" },
+{ text: "None of these apply to me.", gift: "None" }
+]
+},
+{
+text: "What sounds most like you when working with others?",
+options: [
+{ text: "I'm at my best when I'm mentoring or coaching someone one-on-one.", gift: "Shepherding" },
+{ text: "I naturally spot ways to make things run smoother and step in to help.", gift: "Serving" },
+{ text: "I feel responsible to help others think deeply about God and Scripture.", gift: "Teaching" },
+{ text: "None of these apply to me.", gift: "None" }
+]
+},
+{
+text: "Which one resonates with your story?",
+options: [
+{ text: "I've experienced moments where God intervened supernaturally—beyond what I or others could explain.", gift: "Miracles" },
+{ text: "I often spot potential in people that they can't see yet.", gift: "Exhortation" },
+{ text: "I feel called to pioneer new ministries or spiritual communities where none existed before.", gift: "Apostleship" },
+{ text: "None of these apply to me.", gift: "None" }
+]
+},
+{
+text: "What would you likely say?",
+options: [
+{ text: "I feel closest to God when I'm caring for someone who's hurting.", gift: "Mercy" },
+{ text: "I believe prayer can absolutely change what doctors can't understand.", gift: "Healing" },
+{ text: "I can usually tell if someone's struggling spiritually—even if they're smiling.", gift: "Discernment" },
+{ text: "None of these apply to me.", gift: "None" }
+]
+},
+{
+text: "Which of these feels most natural to you?",
+options: [
+{ text: "I get energy from sharing my faith, even with people I don't know well.", gift: "Evangelism" },
+{ text: "I often take initiative in leading a group or team.", gift: "Leadership" },
+{ text: "I'm drawn to spiritual environments where the Holy Spirit is moving in powerful ways.", gift: "Tongues" },
+{ text: "None of these apply to me.", gift: "None" }
+]
+},
+{
+text: "Which sounds most like you?",
+options: [
+{ text: "I often see needs that others miss and step in to help.", gift: "Serving" },
+{ text: "I'm drawn to give up my desires, comfort, or needs, even when it stretches me.", gift: "Sacrificial Gifts" },
+{ text: "I enjoy developing helpful, practical ways for people to apply Scripture in their daily lives.", gift: "Teaching" },
+{ text: "None of these apply to me.", gift: "None" }
+]
+},
+{
+text: "Which one fits you best?",
+options: [
+{ text: "I've sensed when a person or moment was spiritually dangerous.", gift: "Discernment" },
+{ text: "I think starting new ministries or churches sounds exciting.", gift: "Apostleship" },
+{ text: "I enjoy guiding people who are trying to grow spiritually.", gift: "Shepherding" },
+{ text: "None of these apply to me.", gift: "None" }
+]
+},
+{
+text: "What comes most naturally?",
+options: [
+{ text: "I enjoy encouraging others to trust God with their future.", gift: "Exhortation" },
+{ text: "I consistently choose sacrifice over convenience if it helps someone flourish.", gift: "Sacrificial Gifts" },
+{ text: "During private prayer, I often speak in ways that feel directly inspired by the Holy Spirit.", gift: "Tongues" },
+{ text: "None of these apply to me.", gift: "None" }
+]
+},
+{
+text: "How do you typically respond to a need?",
+options: [
+{ text: "I enjoy handling practical needs—setting up, cleaning, fixing, or prepping—so others can focus on people.", gift: "Serving" },
+{ text: "I'm ready to pray for healing—God can still do it, and I've seen Him do the unbelievable when I pray.", gift: "Healing" },
+{ text: "Even when the situation looks impossible, I have an unexplainable trust God is already at work.", gift: "Faith" },
+{ text: "None of these apply to me.", gift: "None" }
+]
+},
+{
+text: "Which of these could be said about you?",
+options: [
+{ text: "You always know just what to say to help me keep going.", gift: "Exhortation" },
+{ text: "You're incredibly generous—even when no one's looking.", gift: "Generosity" },
+{ text: "You help make spiritual ideas actually understandable.", gift: "Teaching" },
+{ text: "None of these apply to me.", gift: "None" }
+]
+},
+{
+text: "Which one do you relate to most?",
+options: [
+{ text: "I'm driven to share the message of Jesus with people who might never step into a church.", gift: "Evangelism" },
+{ text: "I've seen God intervene miraculously when situations felt urgent or desperate.", gift: "Miracles" },
+{ text: "I enjoy coaching others through long-term life or spiritual challenges.", gift: "Shepherding" },
+{ text: "None of these apply to me.", gift: "None" }
+]
+},
+{
+text: "What's truest for you?",
+options: [
+{ text: "I feel burdened when I see someone overlooked or left out.", gift: "Mercy" },
+{ text: "I look at problems and naturally start building solutions.", gift: "Leadership" },
+{ text: "I'm passionate about starting fresh expressions of church to reach unreached people.", gift: "Apostleship" },
+{ text: "None of these apply to me.", gift: "None" }
+]
+},
+{
+text: "Which one hits closest to home?",
+options: [
+{ text: "I trust God in ways that surprise other people.", gift: "Faith" },
+{ text: "I sometimes feel an urgent sense from God about what needs to be said or done—even if it doesn't make logical sense.", gift: "Prophecy" },
+{ text: "People know that when I pray for them, they can experience breakthroughs.", gift: "Miracles" },
+{ text: "None of these apply to me.", gift: "None" }
+]
+},
+{
+text: "What do you gravitate toward?",
+options: [
+{ text: "Building deep spiritual friendships is one of my biggest priorities.", gift: "Shepherding" },
+{ text: "Giving generously is one of the most fulfilling things I do.", gift: "Generosity" },
+{ text: "Finding contentment in being single—I feel like it's the best way for God to use me.", gift: "Sacrificial Gifts" },
+{ text: "None of these apply to me.", gift: "None" }
+]
+},
+{
+text: "What's most true of you in group settings?",
+options: [
+{ text: "I enjoy leading a discussion or pulling people toward a goal.", gift: "Leadership" },
+{ text: "I tend to speak up boldly when I feel like truth needs to be shared.", gift: "Prophecy" },
+{ text: "I help people feel safe and welcomed in unfamiliar environments.", gift: "Mercy" },
+{ text: "None of these apply to me.", gift: "None" }
+]
+},
+{
+text: "How do you usually operate?",
+options: [
+{ text: "I tend to speak from the heart—and people listen.", gift: "Evangelism" },
+{ text: "I notice spiritual patterns others often miss.", gift: "Discernment" },
+{ text: "I enjoy the research side of things—studying, learning, teaching.", gift: "Teaching" },
+{ text: "None of these apply to me.", gift: "None" }
+]
+},
+{
+text: "What reflects your default response?",
+options: [
+{ text: "I love helping people grow and take their next step in faith.", gift: "Exhortation" },
+{ text: "I feel most fulfilled when I'm serving quietly in the background.", gift: "Serving" },
+{ text: "I believe God's gifts—healing, prayer languages, supernatural acts—are still active today.", gift: "Tongues" },
+{ text: "None of these apply to me.", gift: "None" }
+]
+}
+];
+
+// Skill-based questions (8 additional questions)
+const skillQuestions = [
+{
+text: "Do you have any musical ability?",
+type: "multiple",
+options: [
+{ text: "Singing / Vocal Performance", skill: "Musical" },
+{ text: "Playing an Instrument (Band / Worship Team)", skill: "Musical" },
+{ text: "No musical ability", skill: "None" }
+]
+},
+{
+text: "Are you comfortable acting or hosting in front of others?",
+options: [
+{ text: "Yes, I enjoy acting", skill: "Performance" },
+{ text: "Yes, I enjoy hosting or speaking", skill: "Performance" },
+{ text: "No, that's not really me", skill: "None" }
+]
+},
+{
+text: "Do you have any production-related skills?",
+type: "multiple",
+options: [
+{ text: "Audio / Sound Engineering", skill: "Production" },
+{ text: "Lighting", skill: "Production" },
+{ text: "Computers / IT", skill: "Technical" },
+{ text: "Video / Livestreaming", skill: "Production" },
+{ text: "None of the above", skill: "None" }
+]
+},
+{
+text: "Have you done any digital creative work?",
+type: "multiple",
+options: [
+{ text: "Filmmaking", skill: "Creative" },
+{ text: "Graphic Design", skill: "Creative" },
+{ text: "Animation", skill: "Creative" },
+{ text: "Copywriting", skill: "Creative" },
+{ text: "Social Media / Content Creation", skill: "Creative" },
+{ text: "None of the above", skill: "None" }
+]
+},
+{
+text: "Do you have experience with construction or craftsmanship?",
+options: [
+{ text: "Yes, I have construction/craftsmanship skills", skill: "Construction" },
+{ text: "No", skill: "None" }
+]
+},
+{
+text: "Do you enjoy cooking or have experience preparing food for others?",
+options: [
+{ text: "Yes", skill: "Hospitality" },
+{ text: "No", skill: "None" }
+]
+},
+{
+text: "Have you served in a ministry role at a previous church?",
+type: "multiple",
+options: [
+{ text: "Kids", skill: "Children" },
+{ text: "Students", skill: "Youth" },
+{ text: "Groups", skill: "Groups" },
+{ text: "Worship", skill: "Worship" },
+{ text: "Other ministry experience", skill: "Ministry" },
+{ text: "No prior ministry experience", skill: "None" }
+]
+},
+{
+text: "Is there anything else you're especially passionate about or interested in?",
+type: "text",
+placeholder: "This helps us find a ministry opportunity that excites you..."
+}
+];
+
+// Combine all questions
+const allQuestions = [...spiritualGiftsQuestions, ...skillQuestions];
+
+let currentQuestionIndex = 0;
+let answers = [];
+let userInfo = {};
+
+// Google Apps Script Web App URL
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyRu03Ct5p5RntrJslA8ROrUOBNQsMlmsDQoGt0f5Kq_52YOOw11mDP4rCC0ZDgFbJ9qw/exec';
+
+// OpenAI API configuration (you'll need to implement this server-side)
+const OPENAI_API_ENDPOINT = 'YOUR_OPENAI_API_ENDPOINT_HERE';
+
+// Handle form submission
+function handleFormSubmission() {
+    console.log('Form submission started');
+
+    const firstName = document.getElementById('firstName');
+    const lastName = document.getElementById('lastName');
+    const phone = document.getElementById('phone');
+    const discPrimary = document.getElementById('discPrimary');
+    const discSecondary = document.getElementById('discSecondary');
+    const campus = document.getElementById('campus');
+
+    console.log('Form values:', {
+        firstName: firstName?.value,
+        lastName: lastName?.value,
+        phone: phone?.value,
+        discPrimary: discPrimary?.value,
+        discSecondary: discSecondary?.value,
+        campus: campus?.value
+    });
+
+    // Validation
+    let isValid = true;
+    let firstEmptyField = null;
+
+    [firstName, lastName, phone, discPrimary, discSecondary, campus].forEach(field => {
+        field.style.borderColor = '#CDCDCD';
+        field.style.backgroundColor = 'white';
+    });
+
+    if (!firstName.value.trim()) {
+        firstName.style.borderColor = '#e74c3c';
+        firstName.style.backgroundColor = '#fdf2f2';
+        isValid = false;
+        if (!firstEmptyField) firstEmptyField = firstName;
+    }
+
+    if (!lastName.value.trim()) {
+        lastName.style.borderColor = '#e74c3c';
+        lastName.style.backgroundColor = '#fdf2f2';
+        isValid = false;
+        if (!firstEmptyField) firstEmptyField = lastName;
+    }
+
+    if (!phone.value.trim()) {
+        phone.style.borderColor = '#e74c3c';
+        phone.style.backgroundColor = '#fdf2f2';
+        isValid = false;
+        if (!firstEmptyField) firstEmptyField = phone;
+    } else if (!isValidPhoneNumber(phone.value.trim())) {
+        phone.style.borderColor = '#e74c3c';
+        phone.style.backgroundColor = '#fdf2f2';
+        isValid = false;
+        if (!firstEmptyField) firstEmptyField = phone;
+    }
+
+    if (!discPrimary.value) {
+        discPrimary.style.borderColor = '#e74c3c';
+        discPrimary.style.backgroundColor = '#fdf2f2';
+        isValid = false;
+        if (!firstEmptyField) firstEmptyField = discPrimary;
+    }
+
+    if (!discSecondary.value) {
+        discSecondary.style.borderColor = '#e74c3c';
+        discSecondary.style.backgroundColor = '#fdf2f2';
+        isValid = false;
+        if (!firstEmptyField) firstEmptyField = discSecondary;
+    }
+
+    if (!campus.value) {
+        campus.style.borderColor = '#e74c3c';
+        campus.style.backgroundColor = '#fdf2f2';
+        isValid = false;
+        if (!firstEmptyField) firstEmptyField = campus;
+    }
+
+    // Check if primary and secondary are the same (this shouldn't happen anymore, but keeping as backup)
+    if (discPrimary.value && discSecondary.value && discPrimary.value === discSecondary.value) {
+        discSecondary.style.borderColor = '#e74c3c';
+        discSecondary.style.backgroundColor = '#fdf2f2';
+        isValid = false;
+        showErrorMessage('DISC Primary and Secondary cannot be the same.');
+        if (!firstEmptyField) firstEmptyField = discSecondary;
+    }
+
+    if (!isValid) {
+        if (!document.getElementById('error-message')) {
+            let errorMessage = 'Please fill in all required fields.';
+            if (phone.value.trim() && !isValidPhoneNumber(phone.value.trim())) {
+                errorMessage = 'Please enter a valid phone number in xxx-xxx-xxxx format.';
+            }
+            showErrorMessage(errorMessage);
+        }
+        if (firstEmptyField) {
+            firstEmptyField.focus();
+        }
+        return;
+    }
+
+    userInfo = {
+        firstName: firstName.value.trim(),
+        lastName: lastName.value.trim(),
+        phone: phone.value.trim(),
+        discPrimary: discPrimary.value,
+        discSecondary: discSecondary.value,
+        campus: campus.value
+    };
+
+    document.getElementById('userForm').style.display = 'none';
+    document.getElementById('intro').style.display = 'block';
+}
+
+function showErrorMessage(message) {
+    const existingError = document.getElementById('error-message');
+    if (existingError) {
+        existingError.remove();
+    }
+
+    const errorDiv = document.createElement('div');
+    errorDiv.id = 'error-message';
+    errorDiv.style.cssText = `
+        background: #e74c3c;
+        color: white;
+        padding: 12px 20px;
+        border-radius: 8px;
+        margin: 15px 0;
+        font-size: 0.9rem;
+        font-weight: 500;
+        text-align: center;
+        animation: shake 0.5s ease-in-out;
+    `;
+    errorDiv.textContent = message;
+
+    const form = document.getElementById('userInfoForm');
+    form.insertBefore(errorDiv, form.firstChild);
+
+    setTimeout(() => {
+        if (errorDiv.parentNode) {
+            errorDiv.remove();
+        }
+    }, 5000);
+}
+
+function updateDiscSecondary() {
+    const primary = document.getElementById('discPrimary').value;
+    const secondary = document.getElementById('discSecondary');
+    const currentSecondary = secondary.value;
+    
+    // Reset secondary dropdown
+    secondary.innerHTML = '<option value="">Select Secondary</option>';
+    
+    // Add all options except the selected primary
+    const discOptions = [
+        { value: 'D', text: 'D - Dominance' },
+        { value: 'I', text: 'I - Influence' },
+        { value: 'S', text: 'S - Steadiness' },
+        { value: 'C', text: 'C - Conscientiousness' }
+    ];
+    
+    discOptions.forEach(option => {
+        if (option.value !== primary) {
+            const optionElement = document.createElement('option');
+            optionElement.value = option.value;
+            optionElement.textContent = option.text;
+            secondary.appendChild(optionElement);
+        }
+    });
+    
+    // Restore previous selection if it's still valid
+    if (currentSecondary && currentSecondary !== primary) {
+        secondary.value = currentSecondary;
+    }
+}
+
+function startAssessment() {
+    document.getElementById('intro').style.display = 'none';
+    document.getElementById('questionContainer').style.display = 'block';
+    showQuestion();
+}
+
+function showQuestion() {
+    const question = allQuestions[currentQuestionIndex];
+    const questionElement = document.getElementById('currentQuestion');
+    const isSkillQuestion = currentQuestionIndex >= 32;
+    
+    let optionsHtml = '';
+    
+    if (question.type === 'text') {
+        optionsHtml = `
+            <textarea id="textAnswer" placeholder="${question.placeholder}" 
+                     style="width: 100%; min-height: 100px; padding: 15px; border: 2px solid #CDCDCD; 
+                     border-radius: 10px; font-family: 'Kumbh Sans', sans-serif; resize: vertical;"
+                     oninput="handleTextInput()"></textarea>
+        `;
+    } else {
+        optionsHtml = `<div class="options">
+            ${question.options.map((option, index) => `
+                <div class="option" onclick="selectOption(${index})" data-index="${index}">
+                    ${option.text}
+                </div>
+            `).join('')}
+        </div>`;
+        
+        // Add text box for question 39 "Other" option
+        if (currentQuestionIndex === 38) { // Question 39 (0-indexed)
+            optionsHtml += `
+                <div id="otherTextBox" style="display: none; margin-top: 15px;">
+                    <textarea id="otherDescription" placeholder="Please describe your other ministry experience..." 
+                             style="width: 100%; min-height: 80px; padding: 15px; border: 2px solid #CDCDCD; 
+                             border-radius: 10px; font-family: 'Kumbh Sans', sans-serif; resize: vertical;"></textarea>
+                </div>
+            `;
+        }
+    }
+
+    questionElement.innerHTML = `
+        <h3><span class="question-number">${currentQuestionIndex + 1}</span>${question.text}</h3>
+        ${optionsHtml}
+    `;
+
+    updateProgress();
+    updateNavigation();
+}
+
+function selectOption(optionIndex) {
+    const question = allQuestions[currentQuestionIndex];
+    const isSkillQuestion = currentQuestionIndex >= 32;
+    const options = document.querySelectorAll('.option');
+    const clickedOption = options[optionIndex];
+    
+    if (isSkillQuestion) {
+        // Skill questions (33-40) - multiple selection without checkboxes
+        if (question.type === 'multiple') {
+            clickedOption.classList.toggle('selected');
+            
+            // Store all selected options
+            const selectedOptions = [];
+            options.forEach((option, index) => {
+                if (option.classList.contains('selected')) {
+                    selectedOptions.push(question.options[index].skill || question.options[index].text);
+                }
+            });
+            answers[currentQuestionIndex] = selectedOptions;
+            
+            // Show next button if any selection made
+            document.getElementById('nextBtn').style.display = selectedOptions.length > 0 ? 'block' : 'none';
+            
+        } else {
+            // Single selection skill questions
+            options.forEach(opt => opt.classList.remove('selected'));
+            clickedOption.classList.add('selected');
+            answers[currentQuestionIndex] = [question.options[optionIndex].skill || question.options[optionIndex].text];
+            
+            // Show next button
+            document.getElementById('nextBtn').style.display = 'block';
+        }
+        
+        // Handle question 39 "Other" option
+        if (currentQuestionIndex === 38) { // Question 39 (0-indexed)
+            const otherTextBox = document.getElementById('otherTextBox');
+            const isOtherSelected = question.options[optionIndex].text.includes('Other');
+            
+            if (isOtherSelected && clickedOption.classList.contains('selected')) {
+                otherTextBox.style.display = 'block';
+            } else if (isOtherSelected && !clickedOption.classList.contains('selected')) {
+                otherTextBox.style.display = 'none';
+                document.getElementById('otherDescription').value = '';
+            }
+        }
+        
+    } else {
+        // Spiritual gifts questions (1-32) - max 2 selections, auto-advance
+        if (clickedOption.classList.contains('disabled')) {
+            return; // Can't click disabled options
+        }
+        
+        const selectedOptions = document.querySelectorAll('.option.first-selection, .option.second-selection');
+        
+        if (clickedOption.classList.contains('first-selection') || clickedOption.classList.contains('second-selection')) {
+            // Unselecting an already selected option
+            clickedOption.classList.remove('first-selection', 'second-selection');
+            
+            // Re-enable all options
+            options.forEach(opt => opt.classList.remove('disabled'));
+            
+            // Update answers
+            const currentSelections = [];
+            options.forEach((option, index) => {
+                if (option.classList.contains('first-selection')) {
+                    currentSelections.push({ value: question.options[index].gift, priority: 2 });
+                } else if (option.classList.contains('second-selection')) {
+                    currentSelections.push({ value: question.options[index].gift, priority: 1 });
+                }
+            });
+            answers[currentQuestionIndex] = currentSelections;
+            
+        } else if (selectedOptions.length === 0) {
+            // First selection
+            clickedOption.classList.add('first-selection');
+            answers[currentQuestionIndex] = [{ value: question.options[optionIndex].gift, priority: 2 }];
+            
+            // If "None" is selected, auto-advance immediately
+            if (question.options[optionIndex].gift === 'None') {
+                setTimeout(() => {
+                    nextQuestion();
+                }, 800);
+            }
+            
+        } else if (selectedOptions.length === 1) {
+            // Second selection
+            clickedOption.classList.add('second-selection');
+            
+            // Disable the first selection and all other options
+            options.forEach(opt => {
+                if (!opt.classList.contains('first-selection') && !opt.classList.contains('second-selection')) {
+                    opt.classList.add('disabled');
+                }
+                if (opt.classList.contains('first-selection')) {
+                    opt.classList.add('disabled');
+                }
+            });
+            
+            // Update answers with both selections
+            const currentSelections = [];
+            options.forEach((option, index) => {
+                if (option.classList.contains('first-selection')) {
+                    currentSelections.push({ value: question.options[index].gift, priority: 2 });
+                } else if (option.classList.contains('second-selection')) {
+                    currentSelections.push({ value: question.options[index].gift, priority: 1 });
+                }
+            });
+            answers[currentQuestionIndex] = currentSelections;
+            
+            // Auto-advance after 0.8 seconds
+            setTimeout(() => {
+                nextQuestion();
+            }, 800);
+        }
+    }
+}
+
+function handleTextInput() {
+    const textAnswer = document.getElementById('textAnswer');
+    const hasText = textAnswer.value.trim().length > 0;
+    document.getElementById('nextBtn').style.display = hasText ? 'block' : 'none';
+}
+
+function nextQuestion() {
+    // Handle text input
+    const textAnswer = document.getElementById('textAnswer');
+    if (textAnswer) {
+        answers[currentQuestionIndex] = textAnswer.value.trim();
+    }
+    
+    // Handle question 39 "Other" text input
+    if (currentQuestionIndex === 38) { // Question 39
+        const otherDescription = document.getElementById('otherDescription');
+        if (otherDescription && otherDescription.value.trim()) {
+            // Add the "Other" description to the answers
+            if (Array.isArray(answers[currentQuestionIndex])) {
+                answers[currentQuestionIndex] = answers[currentQuestionIndex].map(item => 
+                    item.includes('Other') ? `Other: ${otherDescription.value.trim()}` : item
+                );
+            }
+        }
+    }
+    
+    if (currentQuestionIndex < allQuestions.length - 1) {
+        currentQuestionIndex++;
+        showQuestion();
+    } else {
+        finishAssessment();
+    }
+}
+
+function updateProgress() {
+    const progress = ((currentQuestionIndex + 1) / allQuestions.length) * 100;
+    document.getElementById('progressFill').style.width = progress + '%';
+    document.getElementById('progressText').textContent = `Question ${currentQuestionIndex + 1} of ${allQuestions.length}`;
+}
+
+function updateNavigation() {
+    const isSkillQuestion = currentQuestionIndex >= 32;
+    const nextBtn = document.getElementById('nextBtn');
+    
+    if (isSkillQuestion) {
+        // Show next button for skill questions, but hidden until selection made
+        nextBtn.style.display = 'none';
+        nextBtn.textContent = currentQuestionIndex === allQuestions.length - 1 ? 'Finish' : 'Next';
+    } else {
+        // Hide navigation completely for spiritual gifts questions (auto-advance)
+        nextBtn.style.display = 'none';
+    }
+}
+
+function calculateScores() {
+    const giftScores = {};
+    const skillAreas = [];
+    
+    // Process spiritual gifts questions (first 32)
+    for (let i = 0; i < 32; i++) {
+        const answer = answers[i];
+        if (Array.isArray(answer)) {
+            answer.forEach(item => {
+                if (item.value !== 'None') {
+                    if (!giftScores[item.value]) giftScores[item.value] = 0;
+                    giftScores[item.value] += item.priority;
+                }
+            });
+        }
+    }
+    
+    // Process skill questions (last 8)
+    for (let i = 32; i < allQuestions.length; i++) {
+        const answer = answers[i];
+        if (Array.isArray(answer)) {
+            answer.forEach(skill => {
+                if (skill !== 'None') {
+                    skillAreas.push(skill);
+                }
+            });
+        } else if (typeof answer === 'string' && answer.trim() !== '') {
+            skillAreas.push(answer.trim());
+        }
+    }
+    
+    // Get top 3 spiritual gifts
+    const sortedGifts = Object.entries(giftScores)
+        .sort(([,a], [,b]) => b - a)
+        .slice(0, 3);
+    
+    return {
+        gifts: sortedGifts,
+        skills: skillAreas,
+        allScores: giftScores
+    };
+}
+
+async function finishAssessment() {
+    document.getElementById('questionContainer').style.display = 'none';
+    document.getElementById('results').classList.add('show');
+    document.getElementById('loadingDiv').style.display = 'block';
+    document.getElementById('finalResults').style.display = 'none';
+    
+    const scores = calculateScores();
+    
+    // Generate AI summary
+    try {
+        const aiSummary = await generateAISummary(scores);
+        displayResults(scores, aiSummary);
+        
+        // Send to Google Sheets
+        await sendToGoogleSheets(scores, aiSummary);
+        
+    } catch (error) {
+        console.error('Error generating results:', error);
+        displayResults(scores, 'Unable to generate personalized summary at this time.');
+    }
+}
+
+async function generateAISummary(scores) {
+    // This would need to be implemented server-side to protect API keys
+    // For now, return a placeholder
+    const primaryGift = scores.gifts[0] ? scores.gifts[0][0] : 'Serving';
+    const discProfile = `${userInfo.discPrimary}${userInfo.discSecondary}`;
+    
+    return `Based on your assessment, your primary spiritual gift is ${primaryGift}, combined with your ${discProfile} DISC profile. This unique combination suggests you would thrive in ministry opportunities that allow you to ${primaryGift.toLowerCase()} while leveraging your natural ${userInfo.discPrimary === 'D' ? 'decisive leadership' : userInfo.discPrimary === 'I' ? 'relational influence' : userInfo.discPrimary === 'S' ? 'steady support' : 'detailed organization'} style. Consider exploring opportunities in areas that align with both your spiritual calling and personality strengths.`;
+}
+
+function displayResults(scores, aiSummary) {
+    document.getElementById('loadingDiv').style.display = 'none';
+    document.getElementById('finalResults').style.display = 'block';
+    
+    const resultCard = document.getElementById('resultCard');
+    
+    const giftsListHtml = scores.gifts.map((gift, index) => `
+        <div class="gift-item">
+            <div class="gift-rank">${index === 0 ? 'Primary' : index === 1 ? 'Secondary' : 'Tertiary'}</div>
+            <div class="gift-name">${gift[0]}</div>
+            <div class="gift-score">${gift[1]} points</div>
+        </div>
+    `).join('');
+    
+    resultCard.innerHTML = `
+        <div class="result-header">
+            <div class="result-type">${scores.gifts[0] ? scores.gifts[0][0] : 'Serving'}</div>
+            <div class="result-name">Your Primary Spiritual Gift</div>
+        </div>
+        
+        <div class="gifts-list">
+            ${giftsListHtml}
+        </div>
+        
+        <div class="ai-summary">
+            <h4>Your Personalized Ministry Assessment</h4>
+            <p>${aiSummary}</p>
+        </div>
+    `;
+}
+
+async function sendToGoogleSheets(scores, aiSummary) {
+    console.log('Sending to Google Sheets...');
+    
+    const submissionData = {
+        firstName: userInfo.firstName,
+        lastName: userInfo.lastName,
+        phone: userInfo.phone,
+        discPrimary: userInfo.discPrimary,
+        discSecondary: userInfo.discSecondary,
+        campus: userInfo.campus,
+        spiritualGiftPrimary: scores.gifts[0] ? scores.gifts[0][0] : '',
+        spiritualGiftSecondary: scores.gifts[1] ? scores.gifts[1][0] : '',
+        spiritualGiftTertiary: scores.gifts[2] ? scores.gifts[2][0] : '',
+        sgTimestamp: new Date().toISOString(),
+        aiSummary: aiSummary,
+        skillAreas: scores.skills.join(', ')
+    };
+    
+    console.log('Submission data:', submissionData);
+    
+    try {
+        // Create URL-encoded form data
+        const formBody = Object.keys(submissionData)
+            .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(submissionData[key]))
+            .join('&');
+        
+        console.log('Form body:', formBody);
+        console.log('Sending POST request to:', GOOGLE_SCRIPT_URL);
+        
+        const response = await fetch(GOOGLE_SCRIPT_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: formBody,
+            redirect: 'follow'
+        });
+        
+        console.log('Response status:', response.status);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const responseText = await response.text();
+        console.log('Raw response:', responseText);
+        
+        let result;
+        try {
+            result = JSON.parse(responseText);
+        } catch (e) {
+            console.error('Failed to parse JSON response:', e);
+            console.log('Response was:', responseText);
+            throw new Error('Invalid JSON response from server');
+        }
+        
+        console.log('Parsed response:', result);
+        
+        if (result.success) {
+            showSubmissionSuccess();
+        } else {
+            showSubmissionError(result.message || 'Unknown error occurred');
+        }
+        
+    } catch (error) {
+        console.error('Error sending to Google Sheets:', error);
+        showSubmissionError(error.message);
+    }
+}
+
+function showSubmissionSuccess() {
+    const successMsg = document.createElement('div');
+    successMsg.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #27ae60;
+        color: white;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        z-index: 1000;
+        animation: slideIn 0.3s ease-out;
+        box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
+    `;
+    successMsg.textContent = '✓';
+    document.body.appendChild(successMsg);
+    
+    setTimeout(() => {
+        if (successMsg.parentNode) {
+            successMsg.remove();
+        }
+    }, 3000);
+}
+
+function showSubmissionError(message) {
+    const errorMsg = document.createElement('div');
+    errorMsg.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #e74c3c;
+        color: white;
+        padding: 15px 20px;
+        border-radius: 8px;
+        font-size: 14px;
+        z-index: 1000;
+        animation: slideIn 0.3s ease-out;
+        max-width: 300px;
+        box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+    `;
+    errorMsg.innerHTML = `
+        <strong>Submission Error</strong><br>
+        ${message}
+    `;
+    document.body.appendChild(errorMsg);
+    
+    setTimeout(() => {
+        if (errorMsg.parentNode) {
+            errorMsg.remove();
+        }
+    }, 8000);
+}
+
+function restartAssessment() {
+    currentQuestionIndex = 0;
+    answers = [];
+    userInfo = {};
+    
+    document.getElementById('results').classList.remove('show');
+    document.getElementById('userForm').style.display = 'block';
+    document.getElementById('intro').style.display = 'none';
+    document.getElementById('questionContainer').style.display = 'none';
+    
+    document.getElementById('userInfoForm').reset();
+}
+
+// Phone number formatting function
+function formatPhoneNumber(value) {
+    // Remove all non-digit characters
+    const numericValue = value.replace(/\D/g, '');
+    
+    // Apply formatting based on length
+    if (numericValue.length <= 3) {
+        return numericValue;
+    } else if (numericValue.length <= 6) {
+        return `${numericValue.slice(0, 3)}-${numericValue.slice(3)}`;
+    } else {
+        return `${numericValue.slice(0, 3)}-${numericValue.slice(3, 6)}-${numericValue.slice(6, 10)}`;
+    }
+}
+
+// Validate phone number format
+function isValidPhoneNumber(phone) {
+    // Check if it matches xxx-xxx-xxxx format and has exactly 10 digits
+    const phoneRegex = /^\d{3}-\d{3}-\d{4}$/;
+    return phoneRegex.test(phone);
+}
+
+// Initialize
+document.addEventListener('DOMContentLoaded', function() {
+    updateNavigation();
+    
+    // Set up phone number formatting
+    const phoneInput = document.getElementById('phone');
+    if (phoneInput) {
+        phoneInput.addEventListener('input', function(e) {
+            const formattedValue = formatPhoneNumber(e.target.value);
+            e.target.value = formattedValue;
+        });
+        
+        // Also format on paste
+        phoneInput.addEventListener('paste', function(e) {
+            setTimeout(() => {
+                const formattedValue = formatPhoneNumber(e.target.value);
+                e.target.value = formattedValue;
+            }, 0);
+        });
+    }
+});
+</script>
+</html>
