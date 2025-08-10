@@ -271,7 +271,7 @@ let currentQuestionIndex = 0;
 let answers = [];
 let userInfo = {};
 
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzQyXpYR36z1G6D9nd8J0qNIXfF5Vk4t7SPvZ_yAuVkkaiWI5mWaKB-ccmt_uGkvpBtmg/exec';
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzVkxhVzICST4agCM77FuuWX7qh9Q9v2MNqDa_UMVclq-P_q1-Y0BP-WpLJOqETXtL33A/exec';
 
 /* ========= Helpers ========= */
 function showErrorMessage(message) {
@@ -866,42 +866,42 @@ async function finishAssessment() {
 }
 
 async function generateAISummary(scores) {
+  // Build the payload the Apps Script expects
   const aiRequestData = {
     requestType: 'aiSummary',
     spiritualGiftPrimary:  scores.gifts[0] ? scores.gifts[0][0] : '',
-    spiritualGiftSecondary: scores.gifts[1] ? scores.gifts[1][0] : '',
-    spiritualGiftTertiary:  scores.gifts[2] ? scores.gifts[2][0] : '',
-    discPrimary: userInfo.discPrimary,
-    discSecondary: userInfo.discSecondary,
-    campus: userInfo.campus,
-    skillAreas: scores.skills.join(', ')
+    spiritualGiftSecondary:scores.gifts[1] ? scores.gifts[1][0] : '',
+    spiritualGiftTertiary: scores.gifts[2] ? scores.gifts[2][0] : '',
+    discPrimary:  userInfo.discPrimary,
+    discSecondary:userInfo.discSecondary,
+    campus:       userInfo.campus,
+    skillAreas:   (scores.skills || []).join(', ')
   };
 
   try {
-    const formBody = Object.keys(aiRequestData)
-      .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(aiRequestData[key]))
-      .join('&');
+    const formBody = new URLSearchParams(aiRequestData).toString();
 
-    const response = await fetch(GOOGLE_SCRIPT_URL, {
+    const resp = await fetch(GOOGLE_SCRIPT_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: formBody,
       redirect: 'follow'
     });
 
-    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    const text = await resp.text();
 
-    const responseText = await response.text();
-    let result;
-    try { result = JSON.parse(responseText); }
-    catch { throw new Error('Invalid JSON from AI summary endpoint'); }
+    // Apps Script returns JSON text
+    const result = JSON.parse(text);
 
     if (result.success && result.data && result.data.aiSummary) {
       return result.data.aiSummary;
     }
+    console.error('AI generation failed:', result.message);
     return generateFallbackSummary(scores);
-  } catch (error) {
-    console.error('Error requesting AI summary:', error);
+
+  } catch (err) {
+    console.error('Error requesting AI summary:', err);
     return generateFallbackSummary(scores);
   }
 }
