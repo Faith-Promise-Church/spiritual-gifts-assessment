@@ -1036,15 +1036,343 @@ placeholder: "This helps us find a ministry opportunity that excites you..."
 }
 ];
 
-// Combine all questions
-const allQuestions = [...spiritualGiftsQuestions, ...skillQuestions];
-
+// Global variables
 let currentQuestionIndex = 0;
 let answers = [];
 let userInfo = {};
 
 // Google Apps Script Web App URL - Updated with full lore document integration
 const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzQyXpYR36z1G6D9nd8J0qNIXfF5Vk4t7SPvZ_yAuVkkaiWI5mWaKB-ccmt_uGkvpBtmg/exec';
+
+// Make functions global by attaching to window
+window.updateDiscSecondary = function() {
+    const primary = document.getElementById('discPrimary').value;
+    const secondary = document.getElementById('discSecondary');
+    const currentSecondary = secondary.value;
+    
+    // Reset secondary dropdown
+    secondary.innerHTML = '<option value="">Select Secondary</option>';
+    
+    // Add all options except the selected primary
+    const discOptions = [
+        { value: 'D', text: 'D - Dominance' },
+        { value: 'I', text: 'I - Influence' },
+        { value: 'S', text: 'S - Steadiness' },
+        { value: 'C', text: 'C - Conscientiousness' }
+    ];
+    
+    discOptions.forEach(option => {
+        if (option.value !== primary) {
+            const optionElement = document.createElement('option');
+            optionElement.value = option.value;
+            optionElement.textContent = option.text;
+            secondary.appendChild(optionElement);
+        }
+    });
+    
+    // Restore previous selection if it's still valid
+    if (currentSecondary && currentSecondary !== primary) {
+        secondary.value = currentSecondary;
+    }
+};
+
+// Handle form submission
+window.handleFormSubmission = function() {
+    console.log('Form submission started');
+
+    const firstName = document.getElementById('firstName');
+    const lastName = document.getElementById('lastName');
+    const phone = document.getElementById('phone');
+    const discPrimary = document.getElementById('discPrimary');
+    const discSecondary = document.getElementById('discSecondary');
+    const campus = document.getElementById('campus');
+
+    console.log('Form values:', {
+        firstName: firstName?.value,
+        lastName: lastName?.value,
+        phone: phone?.value,
+        discPrimary: discPrimary?.value,
+        discSecondary: discSecondary?.value,
+        campus: campus?.value
+    });
+
+    // Validation
+    let isValid = true;
+    let firstEmptyField = null;
+
+    [firstName, lastName, phone, discPrimary, discSecondary, campus].forEach(field => {
+        field.style.borderColor = '#CDCDCD';
+        field.style.backgroundColor = 'white';
+    });
+
+    if (!firstName.value.trim()) {
+        firstName.style.borderColor = '#e74c3c';
+        firstName.style.backgroundColor = '#fdf2f2';
+        isValid = false;
+        if (!firstEmptyField) firstEmptyField = firstName;
+    }
+
+    if (!lastName.value.trim()) {
+        lastName.style.borderColor = '#e74c3c';
+        lastName.style.backgroundColor = '#fdf2f2';
+        isValid = false;
+        if (!firstEmptyField) firstEmptyField = lastName;
+    }
+
+    if (!phone.value.trim()) {
+        phone.style.borderColor = '#e74c3c';
+        phone.style.backgroundColor = '#fdf2f2';
+        isValid = false;
+        if (!firstEmptyField) firstEmptyField = phone;
+    } else if (!isValidPhoneNumber(phone.value.trim())) {
+        phone.style.borderColor = '#e74c3c';
+        phone.style.backgroundColor = '#fdf2f2';
+        isValid = false;
+        if (!firstEmptyField) firstEmptyField = phone;
+    }
+
+    if (!discPrimary.value) {
+        discPrimary.style.borderColor = '#e74c3c';
+        discPrimary.style.backgroundColor = '#fdf2f2';
+        isValid = false;
+        if (!firstEmptyField) firstEmptyField = discPrimary;
+    }
+
+    if (!discSecondary.value) {
+        discSecondary.style.borderColor = '#e74c3c';
+        discSecondary.style.backgroundColor = '#fdf2f2';
+        isValid = false;
+        if (!firstEmptyField) firstEmptyField = discSecondary;
+    }
+
+    if (!campus.value) {
+        campus.style.borderColor = '#e74c3c';
+        campus.style.backgroundColor = '#fdf2f2';
+        isValid = false;
+        if (!firstEmptyField) firstEmptyField = campus;
+    }
+
+    // Check if primary and secondary are the same (this shouldn't happen anymore, but keeping as backup)
+    if (discPrimary.value && discSecondary.value && discPrimary.value === discSecondary.value) {
+        discSecondary.style.borderColor = '#e74c3c';
+        discSecondary.style.backgroundColor = '#fdf2f2';
+        isValid = false;
+        showErrorMessage('DISC Primary and Secondary cannot be the same.');
+        if (!firstEmptyField) firstEmptyField = discSecondary;
+    }
+
+    if (!isValid) {
+        if (!document.getElementById('error-message')) {
+            let errorMessage = 'Please fill in all required fields.';
+            if (phone.value.trim() && !isValidPhoneNumber(phone.value.trim())) {
+                errorMessage = 'Please enter a valid phone number in xxx-xxx-xxxx format.';
+            }
+            showErrorMessage(errorMessage);
+        }
+        if (firstEmptyField) {
+            firstEmptyField.focus();
+        }
+        return;
+    }
+
+    userInfo = {
+        firstName: firstName.value.trim(),
+        lastName: lastName.value.trim(),
+        phone: phone.value.trim(),
+        discPrimary: discPrimary.value,
+        discSecondary: discSecondary.value,
+        campus: campus.value
+    };
+
+    document.getElementById('userForm').style.display = 'none';
+    document.getElementById('intro').style.display = 'block';
+};
+
+window.showErrorMessage = function(message) {
+    const existingError = document.getElementById('error-message');
+    if (existingError) {
+        existingError.remove();
+    }
+
+    const errorDiv = document.createElement('div');
+    errorDiv.id = 'error-message';
+    errorDiv.style.cssText = `
+        background: #e74c3c;
+        color: white;
+        padding: 12px 20px;
+        border-radius: 8px;
+        margin: 15px 0;
+        font-size: 0.9rem;
+        font-weight: 500;
+        text-align: center;
+        animation: shake 0.5s ease-in-out;
+    `;
+    errorDiv.textContent = message;
+
+    const form = document.getElementById('userInfoForm');
+    form.insertBefore(errorDiv, form.firstChild);
+
+    setTimeout(() => {
+        if (errorDiv.parentNode) {
+            errorDiv.remove();
+        }
+    }, 5000);
+};
+
+window.startAssessment = function() {
+    document.getElementById('intro').style.display = 'none';
+    document.getElementById('questionContainer').style.display = 'block';
+    showQuestion();
+};
+
+window.selectOption = function(optionIndex) {
+    const question = allQuestions[currentQuestionIndex];
+    const isSkillQuestion = currentQuestionIndex >= 32;
+    const options = document.querySelectorAll('.option');
+    const clickedOption = options[optionIndex];
+    
+    if (isSkillQuestion) {
+        // Skill questions (33-40) - multiple selection without checkboxes
+        if (question.type === 'multiple') {
+            clickedOption.classList.toggle('selected');
+            
+            // Store all selected options
+            const selectedOptions = [];
+            options.forEach((option, index) => {
+                if (option.classList.contains('selected')) {
+                    selectedOptions.push(question.options[index].skill || question.options[index].text);
+                }
+            });
+            answers[currentQuestionIndex] = selectedOptions;
+            
+            // Show next button if any selection made
+            document.getElementById('nextBtn').style.display = selectedOptions.length > 0 ? 'block' : 'none';
+            
+        } else {
+            // Single selection skill questions
+            options.forEach(opt => opt.classList.remove('selected'));
+            clickedOption.classList.add('selected');
+            answers[currentQuestionIndex] = [question.options[optionIndex].skill || question.options[optionIndex].text];
+            
+            // Show next button
+            document.getElementById('nextBtn').style.display = 'block';
+        }
+        
+        // Handle question 39 "Other" option
+        if (currentQuestionIndex === 38) { // Question 39 (0-indexed)
+            const otherTextBox = document.getElementById('otherTextBox');
+            const isOtherSelected = question.options[optionIndex].text.includes('Other');
+            
+            if (isOtherSelected && clickedOption.classList.contains('selected')) {
+                otherTextBox.style.display = 'block';
+            } else if (isOtherSelected && !clickedOption.classList.contains('selected')) {
+                otherTextBox.style.display = 'none';
+                document.getElementById('otherDescription').value = '';
+            }
+        }
+        
+    } else {
+        // Spiritual gifts questions (1-32) - max 2 selections, with Next button
+        if (clickedOption.classList.contains('disabled')) {
+            return; // Can't click disabled options
+        }
+        
+        const selectedOptions = document.querySelectorAll('.option.first-selection, .option.second-selection');
+        
+        if (clickedOption.classList.contains('first-selection') || clickedOption.classList.contains('second-selection')) {
+            // Unselecting an already selected option
+            clickedOption.classList.remove('first-selection', 'second-selection');
+            
+            // Re-enable all options
+            options.forEach(opt => opt.classList.remove('disabled'));
+            
+            // Update answers
+            const currentSelections = [];
+            options.forEach((option, index) => {
+                if (option.classList.contains('first-selection')) {
+                    currentSelections.push({ value: question.options[index].gift, priority: 2 });
+                } else if (option.classList.contains('second-selection')) {
+                    currentSelections.push({ value: question.options[index].gift, priority: 1 });
+                }
+            });
+            answers[currentQuestionIndex] = currentSelections;
+            
+        } else if (selectedOptions.length === 0) {
+            // First selection
+            clickedOption.classList.add('first-selection');
+            answers[currentQuestionIndex] = [{ value: question.options[optionIndex].gift, priority: 2 }];
+            
+        } else if (selectedOptions.length === 1) {
+            // Second selection
+            clickedOption.classList.add('second-selection');
+            
+            // Disable all other options (but leave first and second selectable for deselection)
+            options.forEach(opt => {
+                if (!opt.classList.contains('first-selection') && !opt.classList.contains('second-selection')) {
+                    opt.classList.add('disabled');
+                }
+            });
+            
+            // Update answers with both selections
+            const currentSelections = [];
+            options.forEach((option, index) => {
+                if (option.classList.contains('first-selection')) {
+                    currentSelections.push({ value: question.options[index].gift, priority: 2 });
+                } else if (option.classList.contains('second-selection')) {
+                    currentSelections.push({ value: question.options[index].gift, priority: 1 });
+                }
+            });
+            answers[currentQuestionIndex] = currentSelections;
+        }
+    }
+};
+
+window.handleTextInput = function() {
+    const textAnswer = document.getElementById('textAnswer');
+    const hasText = textAnswer.value.trim().length > 0;
+    document.getElementById('nextBtn').style.display = hasText ? 'block' : 'none';
+};
+
+window.nextQuestion = function() {
+    // Handle text input
+    const textAnswer = document.getElementById('textAnswer');
+    if (textAnswer) {
+        answers[currentQuestionIndex] = textAnswer.value.trim();
+    }
+    
+    // Handle question 39 "Other" text input
+    if (currentQuestionIndex === 38) { // Question 39
+        const otherDescription = document.getElementById('otherDescription');
+        if (otherDescription && otherDescription.value.trim()) {
+            // Add the "Other" description to the answers
+            if (Array.isArray(answers[currentQuestionIndex])) {
+                answers[currentQuestionIndex] = answers[currentQuestionIndex].map(item => 
+                    item.includes('Other') ? `Other: ${otherDescription.value.trim()}` : item
+                );
+            }
+        }
+    }
+    
+    if (currentQuestionIndex < allQuestions.length - 1) {
+        currentQuestionIndex++;
+        showQuestion();
+    } else {
+        finishAssessment();
+    }
+};
+
+window.restartAssessment = function() {
+    currentQuestionIndex = 0;
+    answers = [];
+    userInfo = {};
+    
+    document.getElementById('results').classList.remove('show');
+    document.getElementById('userForm').style.display = 'block';
+    document.getElementById('intro').style.display = 'none';
+    document.getElementById('questionContainer').style.display = 'none';
+    
+    document.getElementById('userInfoForm').reset();
+};
 
 // Handle form submission
 function handleFormSubmission() {
@@ -1220,13 +1548,192 @@ function updateDiscSecondary() {
     }
 }
 
-function startAssessment() {
-    document.getElementById('intro').style.display = 'none';
-    document.getElementById('questionContainer').style.display = 'block';
-    showQuestion();
+function showQuestion() {
+    const question = allQuestions[currentQuestionIndex];
+    const questionElement = document.getElementById('currentQuestion');
+    const isSkillQuestion = currentQuestionIndex >= 32;
+    
+    let optionsHtml = '';
+    let instructionsHtml = '';
+    
+    // Add instructions for spiritual gifts questions (1-32)
+    if (!isSkillQuestion) {
+        instructionsHtml = `<p style="font-style: italic; color: #666; margin-bottom: 15px; font-size: 0.9em;">Select up to two (2) choices that apply to you. You may also choose one or none.</p>`;
+    }
+    
+    if (question.type === 'text') {
+        optionsHtml = `
+            <textarea id="textAnswer" placeholder="${question.placeholder}" 
+                     style="width: 100%; min-height: 100px; padding: 15px; border: 2px solid #CDCDCD; 
+                     border-radius: 10px; font-family: 'Kumbh Sans', sans-serif; resize: vertical;"
+                     oninput="handleTextInput()"></textarea>
+        `;
+    } else {
+        optionsHtml = `<div class="options">
+            ${question.options.map((option, index) => `
+                <div class="option" onclick="selectOption(${index})" data-index="${index}">
+                    ${option.text}
+                </div>
+            `).join('')}
+        </div>`;
+        
+        // Add text box for question 39 "Other" option
+        if (currentQuestionIndex === 38) { // Question 39 (0-indexed)
+            optionsHtml += `
+                <div id="otherTextBox" style="display: none; margin-top: 15px;">
+                    <textarea id="otherDescription" placeholder="Please describe your other ministry experience..." 
+                             style="width: 100%; min-height: 80px; padding: 15px; border: 2px solid #CDCDCD; 
+                             border-radius: 10px; font-family: 'Kumbh Sans', sans-serif; resize: vertical;"></textarea>
+                </div>
+            `;
+        }
+    }
+
+    questionElement.innerHTML = `
+        <h3><span class="question-number">${currentQuestionIndex + 1}</span>${question.text}</h3>
+        ${instructionsHtml}
+        ${optionsHtml}
+    `;
+
+    updateProgress();
+    updateNavigation();
 }
 
-function showQuestion() {
+function selectOption(optionIndex) {
+    const question = allQuestions[currentQuestionIndex];
+    const isSkillQuestion = currentQuestionIndex >= 32;
+    const options = document.querySelectorAll('.option');
+    const clickedOption = options[optionIndex];
+    
+    if (isSkillQuestion) {
+        // Skill questions (33-40) - multiple selection without checkboxes
+        if (question.type === 'multiple') {
+            clickedOption.classList.toggle('selected');
+            
+            // Store all selected options
+            const selectedOptions = [];
+            options.forEach((option, index) => {
+                if (option.classList.contains('selected')) {
+                    selectedOptions.push(question.options[index].skill || question.options[index].text);
+                }
+            });
+            answers[currentQuestionIndex] = selectedOptions;
+            
+            // Show next button if any selection made
+            document.getElementById('nextBtn').style.display = selectedOptions.length > 0 ? 'block' : 'none';
+            
+        } else {
+            // Single selection skill questions
+            options.forEach(opt => opt.classList.remove('selected'));
+            clickedOption.classList.add('selected');
+            answers[currentQuestionIndex] = [question.options[optionIndex].skill || question.options[optionIndex].text];
+            
+            // Show next button
+            document.getElementById('nextBtn').style.display = 'block';
+        }
+        
+        // Handle question 39 "Other" option
+        if (currentQuestionIndex === 38) { // Question 39 (0-indexed)
+            const otherTextBox = document.getElementById('otherTextBox');
+            const isOtherSelected = question.options[optionIndex].text.includes('Other');
+            
+            if (isOtherSelected && clickedOption.classList.contains('selected')) {
+                otherTextBox.style.display = 'block';
+            } else if (isOtherSelected && !clickedOption.classList.contains('selected')) {
+                otherTextBox.style.display = 'none';
+                document.getElementById('otherDescription').value = '';
+            }
+        }
+        
+    } else {
+        // Spiritual gifts questions (1-32) - max 2 selections, with Next button
+        if (clickedOption.classList.contains('disabled')) {
+            return; // Can't click disabled options
+        }
+        
+        const selectedOptions = document.querySelectorAll('.option.first-selection, .option.second-selection');
+        
+        if (clickedOption.classList.contains('first-selection') || clickedOption.classList.contains('second-selection')) {
+            // Unselecting an already selected option
+            clickedOption.classList.remove('first-selection', 'second-selection');
+            
+            // Re-enable all options
+            options.forEach(opt => opt.classList.remove('disabled'));
+            
+            // Update answers
+            const currentSelections = [];
+            options.forEach((option, index) => {
+                if (option.classList.contains('first-selection')) {
+                    currentSelections.push({ value: question.options[index].gift, priority: 2 });
+                } else if (option.classList.contains('second-selection')) {
+                    currentSelections.push({ value: question.options[index].gift, priority: 1 });
+                }
+            });
+            answers[currentQuestionIndex] = currentSelections;
+            
+        } else if (selectedOptions.length === 0) {
+            // First selection
+            clickedOption.classList.add('first-selection');
+            answers[currentQuestionIndex] = [{ value: question.options[optionIndex].gift, priority: 2 }];
+            
+        } else if (selectedOptions.length === 1) {
+            // Second selection
+            clickedOption.classList.add('second-selection');
+            
+            // Disable all other options (but leave first and second selectable for deselection)
+            options.forEach(opt => {
+                if (!opt.classList.contains('first-selection') && !opt.classList.contains('second-selection')) {
+                    opt.classList.add('disabled');
+                }
+            });
+            
+            // Update answers with both selections
+            const currentSelections = [];
+            options.forEach((option, index) => {
+                if (option.classList.contains('first-selection')) {
+                    currentSelections.push({ value: question.options[index].gift, priority: 2 });
+                } else if (option.classList.contains('second-selection')) {
+                    currentSelections.push({ value: question.options[index].gift, priority: 1 });
+                }
+            });
+            answers[currentQuestionIndex] = currentSelections;
+        }
+    }
+}
+
+function handleTextInput() {
+    const textAnswer = document.getElementById('textAnswer');
+    const hasText = textAnswer.value.trim().length > 0;
+    document.getElementById('nextBtn').style.display = hasText ? 'block' : 'none';
+}
+
+function nextQuestion() {
+    // Handle text input
+    const textAnswer = document.getElementById('textAnswer');
+    if (textAnswer) {
+        answers[currentQuestionIndex] = textAnswer.value.trim();
+    }
+    
+    // Handle question 39 "Other" text input
+    if (currentQuestionIndex === 38) { // Question 39
+        const otherDescription = document.getElementById('otherDescription');
+        if (otherDescription && otherDescription.value.trim()) {
+            // Add the "Other" description to the answers
+            if (Array.isArray(answers[currentQuestionIndex])) {
+                answers[currentQuestionIndex] = answers[currentQuestionIndex].map(item => 
+                    item.includes('Other') ? `Other: ${otherDescription.value.trim()}` : item
+                );
+            }
+        }
+    }
+    
+    if (currentQuestionIndex < allQuestions.length - 1) {
+        currentQuestionIndex++;
+        showQuestion();
+    } else {
+        finishAssessment();
+    }
+}
     const question = allQuestions[currentQuestionIndex];
     const questionElement = document.getElementById('currentQuestion');
     const isSkillQuestion = currentQuestionIndex >= 32;
