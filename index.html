@@ -242,7 +242,7 @@ overflow: hidden;
 }
 
 .progress-fill {
-background: linear-gradient(135deg, #6F878D, #445557);
+background: linear-gradient(135deg, #6F878D, #657B64);
 height: 100%;
 border-radius: 4px;
 transition: width 0.3s ease;
@@ -655,7 +655,7 @@ max-width: 900px;
 <div class="intro" id="intro">
 <h2>Welcome to the Spiritual Gifts Assessment</h2>
 <p>This assessment will help you discover your God-given spiritual gifts and how you can use them to serve in ministry.</p>
-<p><strong>Instructions:</strong> For each question, you may select <strong>up to TWO options</strong> that best describe you. Select the one that most describes you first. If you don't see two that apply to you, choose <strong>one option and then choose "Skip to next question."</strong> .</p>
+<p><strong>Instructions:</strong> For each question, you may select up to <strong>TWO options</strong> that best describe you. Select the one that most describes you first. You may choose only one option if you don't see two that apply to you.</p>
 <p>There are 40 questions covering spiritual gifts and practical skills. This will take approximately 10-15 minutes to complete.</p>
 <button class="start-btn" onclick="startAssessment()">Start Assessment</button>
 </div>
@@ -700,16 +700,14 @@ You can select up to 2 options per question. Please unselect one option before s
 </body>
 
 <script>
-// Spiritual Gifts Questions (32 main questions from the document)
+// Spiritual Gifts Questions (32 main questions from the document) - ALL "None" options removed
 const spiritualGiftsQuestions = [
-// Q1-Q32 from your document
 {
 text: "Which of these sounds most like you?",
 options: [
 { text: "I naturally find myself caring for people's emotional or spiritual health.", gift: "Shepherding" },
 { text: "I can usually sense when something is spiritually 'off,' even if no one says anything.", gift: "Discernment" },
-{ text: "I feel a strong pull to speak truth, even when it might be hard to hear.", gift: "Prophecy" },
-{ text: "Skip to next question", gift: "None" }
+{ text: "I feel a strong pull to speak truth, even when it might be hard to hear.", gift: "Prophecy" }
 ]
 },
 {
@@ -717,8 +715,7 @@ text: "Which of these is most true of you?",
 options: [
 { text: "I often find myself trusting God even when the circumstances don't make sense.", gift: "Faith" },
 { text: "I love finding ways to give money or resources to causes I believe in.", gift: "Generosity" },
-{ text: "I have a gut instinct when someone is being fake or hiding something.", gift: "Discernment" },
-{ text: "Skip to next question", gift: "None" }
+{ text: "I have a gut instinct when someone is being fake or hiding something.", gift: "Discernment" }
 ]
 },
 {
@@ -726,17 +723,15 @@ text: "Which of these feels most like you?",
 options: [
 { text: "I come alive when I'm sharing Jesus with someone who doesn't yet believe.", gift: "Evangelism" },
 { text: "I naturally look for ways to cheer people on and help them move forward.", gift: "Exhortation" },
-{ text: "While ministering or praying, I've witnessed God move in ways that defy natural explanation.", gift: "Miracles" },
-{ text: "Skip to next question", gift: "None" }
+{ text: "While ministering or praying, I've witnessed God move in ways that defy natural explanation.", gift: "Miracles" }
 ]
 },
 {
 text: "Which of these would you most likely say?",
 options: [
 { text: "I'm comfortable making decisions and galvanizing people to pursue a goal.", gift: "Leadership" },
-{ text: "I love starting new things—especially if it means reaching new people.", gift: "Apostleship" },
-{ text: "When challenges hit, I tend to believe God will come through—somehow, some way.", gift: "Faith" },
-{ text: "Skip to next question", gift: "None" }
+{ text: "I love starting new things, especially if it means reaching new people.", gift: "Apostleship" },
+{ text: "When challenges hit, I tend to believe God will come through, somehow, some way.", gift: "Faith" }
 ]
 },
 {
@@ -744,17 +739,15 @@ text: "Which one best describes you?",
 options: [
 { text: "I get excited when I get to talk to someone about Jesus.", gift: "Evangelism" },
 { text: "In prayer, I've found myself speaking or worshiping in a Spirit-led language I never learned.", gift: "Tongues" },
-{ text: "I feel called to give up comfort or resources, even when it's costly, to meet someone's need.", gift: "Sacrificial Gifts" },
-{ text: "Skip to next question", gift: "None" }
+{ text: "I feel called to give up comfort or resources, even when it's costly, to meet someone's need.", gift: "Sacrificial Gifts" }
 ]
 },
 {
 text: "Which one feels most true of you?",
 options: [
-{ text: "I am honored to give others what they want at the expense of what I want—even when no one notices.", gift: "Sacrificial Gifts" },
+{ text: "I am honored to give others what they want at the expense of what I want, even when no one notices.", gift: "Sacrificial Gifts" },
 { text: "I love spending time with people who are hurting or overlooked.", gift: "Mercy" },
-{ text: "Even in impossible situations, I feel an unshakable confidence that God is working.", gift: "Faith" },
-{ text: "Skip to next question", gift: "None" }
+{ text: "Even in impossible situations, I feel an unshakable confidence that God is working.", gift: "Faith" }
 ]
 },
 {
@@ -762,8 +755,7 @@ text: "Which of these do you relate to most?",
 options: [
 { text: "I like to lead, but I especially love building leaders around me.", gift: "Apostleship" },
 { text: "I feel drawn to pray for physical healing and have faith that God can restore health.", gift: "Healing" },
-{ text: "I feel deeply responsible for helping people understand and apply the Bible.", gift: "Teaching" },
-{ text: "Skip to next question", gift: "None" }
+{ text: "I feel deeply responsible for helping people understand and apply the Bible.", gift: "Teaching" }
 ]
 },
 {
@@ -771,8 +763,7 @@ text: "Which one sounds most like you?",
 options: [
 { text: "When I read or listen, I often get a strong sense of what God is really saying.", gift: "Prophecy" },
 { text: "I regularly feel drawn to pray when someone is struggling physically.", gift: "Healing" },
-{ text: "I've experienced praying in a spiritual language that I didn't consciously choose.", gift: "Tongues" },
-{ text: "Skip to next question", gift: "None" }
+{ text: "I've experienced praying in a spiritual language that I didn't consciously choose.", gift: "Tongues" }
 ]
 },
 {
@@ -780,8 +771,7 @@ text: "What do you find yourself doing most naturally?",
 options: [
 { text: "I help people feel comfortable and included, especially in new environments.", gift: "Shepherding" },
 { text: "I'm often the one who spots problems and offers a simple fix.", gift: "Serving" },
-{ text: "I gravitate toward giving when I know it'll meet a real need.", gift: "Generosity" },
-{ text: "Skip to next question", gift: "None" }
+{ text: "I gravitate toward giving when I know it'll meet a real need.", gift: "Generosity" }
 ]
 },
 {
@@ -789,8 +779,7 @@ text: "Which of these do you think someone would likely say about you?",
 options: [
 { text: "You're really good at explaining things in a way that just makes sense.", gift: "Teaching" },
 { text: "You're always thinking about how to make someone's day better.", gift: "Mercy" },
-{ text: "You just know when something deeper is going on with someone.", gift: "Discernment" },
-{ text: "Skip to next question", gift: "None" }
+{ text: "You just know when something deeper is going on with someone.", gift: "Discernment" }
 ]
 },
 {
@@ -798,8 +787,7 @@ text: "Which of these do you find most true about yourself?",
 options: [
 { text: "I often feel compelled to pray when someone is sick or in pain.", gift: "Healing" },
 { text: "I'm often the one asking, 'What if we tried something new?'", gift: "Apostleship" },
-{ text: "I find myself praying with boldness for God to do something miraculous.", gift: "Miracles" },
-{ text: "Skip to next question", gift: "None" }
+{ text: "I find myself praying with boldness for God to do something miraculous.", gift: "Miracles" }
 ]
 },
 {
@@ -807,8 +795,7 @@ text: "What feels most natural for you?",
 options: [
 { text: "I regularly feel called to encourage people with specific truth—even when it's uncomfortable.", gift: "Prophecy" },
 { text: "I like to be the person who makes things happen behind the scenes.", gift: "Serving" },
-{ text: "I think about how to use my money or resources to make a spiritual impact.", gift: "Generosity" },
-{ text: "Skip to next question", gift: "None" }
+{ text: "I think about how to use my money or resources to make a spiritual impact.", gift: "Generosity" }
 ]
 },
 {
@@ -816,8 +803,7 @@ text: "Which of these best describes your instincts?",
 options: [
 { text: "When someone is physically sick, I'm quick to pray for God's healing power.", gift: "Healing" },
 { text: "I find joy in encouraging people to take bold steps in their walk with God—especially when they feel stuck.", gift: "Exhortation" },
-{ text: "I've seen God move in a way that only He could—especially in desperate moments.", gift: "Miracles" },
-{ text: "Skip to next question", gift: "None" }
+{ text: "I've seen God move in a way that only He could—especially in desperate moments.", gift: "Miracles" }
 ]
 },
 {
@@ -825,8 +811,7 @@ text: "What would your friends say about you?",
 options: [
 { text: "You're always looking out for people who feel left out.", gift: "Mercy" },
 { text: "You're not afraid to step up and lead when something needs to be done.", gift: "Leadership" },
-{ text: "You're always looking for ways to give, even when no one's asking.", gift: "Generosity" },
-{ text: "Skip to next question", gift: "None" }
+{ text: "You're always looking for ways to give, even when no one's asking.", gift: "Generosity" }
 ]
 },
 {
@@ -834,8 +819,7 @@ text: "Which of these most reflects you?",
 options: [
 { text: "I've felt deeply stirred to pray or speak in words I didn't fully understand.", gift: "Tongues" },
 { text: "I believe God has uniquely wired me to reach people who haven't heard the gospel.", gift: "Evangelism" },
-{ text: "I give something up so others can experience something better.", gift: "Sacrificial Gifts" },
-{ text: "Skip to next question", gift: "None" }
+{ text: "I give something up so others can experience something better.", gift: "Sacrificial Gifts" }
 ]
 },
 {
@@ -843,8 +827,7 @@ text: "How do you tend to approach challenges?",
 options: [
 { text: "I rely on prayer and trust that God's going to show up.", gift: "Faith" },
 { text: "I pull people together and help them find a way forward.", gift: "Leadership" },
-{ text: "I listen closely for God's direction and speak what I believe He's saying.", gift: "Prophecy" },
-{ text: "Skip to next question", gift: "None" }
+{ text: "I listen closely for God's direction and speak what I believe He's saying.", gift: "Prophecy" }
 ]
 },
 {
@@ -852,8 +835,7 @@ text: "What sounds most like you when working with others?",
 options: [
 { text: "I'm at my best when I'm mentoring or coaching someone one-on-one.", gift: "Shepherding" },
 { text: "I naturally spot ways to make things run smoother and step in to help.", gift: "Serving" },
-{ text: "I feel responsible to help others think deeply about God and Scripture.", gift: "Teaching" },
-{ text: "Skip to next question", gift: "None" }
+{ text: "I feel responsible to help others think deeply about God and Scripture.", gift: "Teaching" }
 ]
 },
 {
@@ -861,8 +843,7 @@ text: "Which one resonates with your story?",
 options: [
 { text: "I've experienced moments where God intervened supernaturally—beyond what I or others could explain.", gift: "Miracles" },
 { text: "I often spot potential in people that they can't see yet.", gift: "Exhortation" },
-{ text: "I feel called to pioneer new ministries or spiritual communities where none existed before.", gift: "Apostleship" },
-{ text: "Skip to next question", gift: "None" }
+{ text: "I feel called to pioneer new ministries or spiritual communities where none existed before.", gift: "Apostleship" }
 ]
 },
 {
@@ -870,8 +851,7 @@ text: "What would you likely say?",
 options: [
 { text: "I feel closest to God when I'm caring for someone who's hurting.", gift: "Mercy" },
 { text: "I believe prayer can absolutely change what doctors can't understand.", gift: "Healing" },
-{ text: "I can usually tell if someone's struggling spiritually—even if they're smiling.", gift: "Discernment" },
-{ text: "Skip to next question", gift: "None" }
+{ text: "I can usually tell if someone's struggling spiritually—even if they're smiling.", gift: "Discernment" }
 ]
 },
 {
@@ -879,8 +859,7 @@ text: "Which of these feels most natural to you?",
 options: [
 { text: "I get energy from sharing my faith, even with people I don't know well.", gift: "Evangelism" },
 { text: "I often take initiative in leading a group or team.", gift: "Leadership" },
-{ text: "I'm drawn to spiritual environments where the Holy Spirit is moving in powerful ways.", gift: "Tongues" },
-{ text: "Skip to next question", gift: "None" }
+{ text: "I'm drawn to spiritual environments where the Holy Spirit is moving in powerful ways.", gift: "Tongues" }
 ]
 },
 {
@@ -888,8 +867,7 @@ text: "Which sounds most like you?",
 options: [
 { text: "I often see needs that others miss and step in to help.", gift: "Serving" },
 { text: "I'm drawn to give up my desires, comfort, or needs, even when it stretches me.", gift: "Sacrificial Gifts" },
-{ text: "I enjoy developing helpful, practical ways for people to apply Scripture in their daily lives.", gift: "Teaching" },
-{ text: "Skip to next question", gift: "None" }
+{ text: "I enjoy developing helpful, practical ways for people to apply Scripture in their daily lives.", gift: "Teaching" }
 ]
 },
 {
@@ -897,8 +875,7 @@ text: "Which one fits you best?",
 options: [
 { text: "I've sensed when a person or moment was spiritually dangerous.", gift: "Discernment" },
 { text: "I think starting new ministries or churches sounds exciting.", gift: "Apostleship" },
-{ text: "I enjoy guiding people who are trying to grow spiritually.", gift: "Shepherding" },
-{ text: "Skip to next question", gift: "None" }
+{ text: "I enjoy guiding people who are trying to grow spiritually.", gift: "Shepherding" }
 ]
 },
 {
@@ -906,8 +883,7 @@ text: "What comes most naturally?",
 options: [
 { text: "I enjoy encouraging others to trust God with their future.", gift: "Exhortation" },
 { text: "I consistently choose sacrifice over convenience if it helps someone flourish.", gift: "Sacrificial Gifts" },
-{ text: "During private prayer, I often speak in ways that feel directly inspired by the Holy Spirit.", gift: "Tongues" },
-{ text: "Skip to next question", gift: "None" }
+{ text: "During private prayer, I often speak in ways that feel directly inspired by the Holy Spirit.", gift: "Tongues" }
 ]
 },
 {
@@ -915,17 +891,15 @@ text: "How do you typically respond to a need?",
 options: [
 { text: "I enjoy handling practical needs—setting up, cleaning, fixing, or prepping—so others can focus on people.", gift: "Serving" },
 { text: "I'm ready to pray for healing—God can still do it, and I've seen Him do the unbelievable when I pray.", gift: "Healing" },
-{ text: "Even when the situation looks impossible, I have an unexplainable trust God is already at work.", gift: "Faith" },
-{ text: "Skip to next question", gift: "None" }
+{ text: "Even when the situation looks impossible, I have an unexplainable trust God is already at work.", gift: "Faith" }
 ]
 },
 {
 text: "Which of these could be said about you?",
 options: [
 { text: "You always know just what to say to help me keep going.", gift: "Exhortation" },
-{ text: "You're incredibly generous—even when no one's looking.", gift: "Generosity" },
-{ text: "You help make spiritual ideas actually understandable.", gift: "Teaching" },
-{ text: "Skip to next question", gift: "None" }
+{ text: "You're incredibly generous, even when no one's looking.", gift: "Generosity" },
+{ text: "You help make spiritual ideas actually understandable.", gift: "Teaching" }
 ]
 },
 {
@@ -933,8 +907,7 @@ text: "Which one do you relate to most?",
 options: [
 { text: "I'm driven to share the message of Jesus with people who might never step into a church.", gift: "Evangelism" },
 { text: "I've seen God intervene miraculously when situations felt urgent or desperate.", gift: "Miracles" },
-{ text: "I enjoy coaching others through long-term life or spiritual challenges.", gift: "Shepherding" },
-{ text: "Skip to next question", gift: "None" }
+{ text: "I enjoy coaching others through long-term life or spiritual challenges.", gift: "Shepherding" }
 ]
 },
 {
@@ -942,8 +915,7 @@ text: "What's truest for you?",
 options: [
 { text: "I feel burdened when I see someone overlooked or left out.", gift: "Mercy" },
 { text: "I look at problems and naturally start building solutions.", gift: "Leadership" },
-{ text: "I'm passionate about starting fresh expressions of church to reach unreached people.", gift: "Apostleship" },
-{ text: "Skip to next question", gift: "None" }
+{ text: "I'm passionate about starting fresh expressions of church to reach unreached people.", gift: "Apostleship" }
 ]
 },
 {
@@ -951,8 +923,7 @@ text: "Which one hits closest to home?",
 options: [
 { text: "I trust God in ways that surprise other people.", gift: "Faith" },
 { text: "I sometimes feel an urgent sense from God about what needs to be said or done—even if it doesn't make logical sense.", gift: "Prophecy" },
-{ text: "People know that when I pray for them, they can experience breakthroughs.", gift: "Miracles" },
-{ text: "Skip to next question", gift: "None" }
+{ text: "People know that when I pray for them, they can experience breakthroughs.", gift: "Miracles" }
 ]
 },
 {
@@ -960,8 +931,7 @@ text: "What do you gravitate toward?",
 options: [
 { text: "Building deep spiritual friendships is one of my biggest priorities.", gift: "Shepherding" },
 { text: "Giving generously is one of the most fulfilling things I do.", gift: "Generosity" },
-{ text: "Finding contentment in being single—I feel like it's the best way for God to use me.", gift: "Sacrificial Gifts" },
-{ text: "Skip to next question", gift: "None" }
+{ text: "Finding contentment in being single—I feel like it's the best way for God to use me.", gift: "Sacrificial Gifts" }
 ]
 },
 {
@@ -969,8 +939,7 @@ text: "What's most true of you in group settings?",
 options: [
 { text: "I enjoy leading a discussion or pulling people toward a goal.", gift: "Leadership" },
 { text: "I tend to speak up boldly when I feel like truth needs to be shared.", gift: "Prophecy" },
-{ text: "I help people feel safe and welcomed in unfamiliar environments.", gift: "Mercy" },
-{ text: "Skip to next question", gift: "None" }
+{ text: "I help people feel safe and welcomed in unfamiliar environments.", gift: "Mercy" }
 ]
 },
 {
@@ -978,8 +947,7 @@ text: "How do you usually operate?",
 options: [
 { text: "I tend to speak from the heart—and people listen.", gift: "Evangelism" },
 { text: "I notice spiritual patterns others often miss.", gift: "Discernment" },
-{ text: "I enjoy the research side of things—studying, learning, teaching.", gift: "Teaching" },
-{ text: "Skip to next question", gift: "None" }
+{ text: "I enjoy the research side of things—studying, learning, teaching.", gift: "Teaching" }
 ]
 },
 {
@@ -987,8 +955,7 @@ text: "What reflects your default response?",
 options: [
 { text: "I love helping people grow and take their next step in faith.", gift: "Exhortation" },
 { text: "I feel most fulfilled when I'm serving quietly in the background.", gift: "Serving" },
-{ text: "I believe God's gifts—healing, prayer languages, supernatural acts—are still active today.", gift: "Tongues" },
-{ text: "Skip to next question", gift: "None" }
+{ text: "I've seen God's gifts—healing, prayer languages, supernatural acts—still active today.", gift: "Tongues" }
 ]
 }
 ];
@@ -1057,6 +1024,7 @@ options: [
 { text: "Students", skill: "Youth" },
 { text: "Groups", skill: "Groups" },
 { text: "Worship", skill: "Worship" },
+{ text: "Missions", skill: "Missions" },
 { text: "Other ministry experience", skill: "Ministry" },
 { text: "No prior ministry experience", skill: "None" }
 ]
@@ -1075,8 +1043,8 @@ let currentQuestionIndex = 0;
 let answers = [];
 let userInfo = {};
 
-// Google Apps Script Web App URL - UPDATE THIS AFTER EACH DEPLOYMENT
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby4-Jpo3lf7lAJx7qTeRt6OGsS9AG0SlpaMfDwh3QE8nl6N4N1i3V9XfA3jhANomI3Tkg/exec';
+// Google Apps Script Web App URL - Updated with full lore document integration
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzQyXpYR36z1G6D9nd8J0qNIXfF5Vk4t7SPvZ_yAuVkkaiWI5mWaKB-ccmt_uGkvpBtmg/exec';
 
 // Handle form submission
 function handleFormSubmission() {
@@ -1264,6 +1232,12 @@ function showQuestion() {
     const isSkillQuestion = currentQuestionIndex >= 32;
     
     let optionsHtml = '';
+    let instructionsHtml = '';
+    
+    // Add instructions for spiritual gifts questions (1-32)
+    if (!isSkillQuestion) {
+        instructionsHtml = `<p style="font-style: italic; color: #666; margin-bottom: 15px; font-size: 0.9em;">Select up to two (2) choices that apply to you. You may also choose one or none.</p>`;
+    }
     
     if (question.type === 'text') {
         optionsHtml = `
@@ -1295,6 +1269,7 @@ function showQuestion() {
 
     questionElement.innerHTML = `
         <h3><span class="question-number">${currentQuestionIndex + 1}</span>${question.text}</h3>
+        ${instructionsHtml}
         ${optionsHtml}
     `;
 
@@ -1349,7 +1324,7 @@ function selectOption(optionIndex) {
         }
         
     } else {
-        // Spiritual gifts questions (1-32) - max 2 selections, auto-advance
+        // Spiritual gifts questions (1-32) - max 2 selections, with Next button
         if (clickedOption.classList.contains('disabled')) {
             return; // Can't click disabled options
         }
@@ -1379,23 +1354,13 @@ function selectOption(optionIndex) {
             clickedOption.classList.add('first-selection');
             answers[currentQuestionIndex] = [{ value: question.options[optionIndex].gift, priority: 2 }];
             
-            // If "None" is selected, auto-advance immediately
-            if (question.options[optionIndex].gift === 'None') {
-                setTimeout(() => {
-                    nextQuestion();
-                }, 800);
-            }
-            
         } else if (selectedOptions.length === 1) {
             // Second selection
             clickedOption.classList.add('second-selection');
             
-            // Disable the first selection and all other options
+            // Disable all other options (but leave first and second selectable for deselection)
             options.forEach(opt => {
                 if (!opt.classList.contains('first-selection') && !opt.classList.contains('second-selection')) {
-                    opt.classList.add('disabled');
-                }
-                if (opt.classList.contains('first-selection')) {
                     opt.classList.add('disabled');
                 }
             });
@@ -1410,11 +1375,6 @@ function selectOption(optionIndex) {
                 }
             });
             answers[currentQuestionIndex] = currentSelections;
-            
-            // Auto-advance after 0.8 seconds
-            setTimeout(() => {
-                nextQuestion();
-            }, 800);
         }
     }
 }
@@ -1468,8 +1428,12 @@ function updateNavigation() {
         nextBtn.style.display = 'none';
         nextBtn.textContent = currentQuestionIndex === allQuestions.length - 1 ? 'Finish' : 'Next';
     } else {
-        // Hide navigation completely for spiritual gifts questions (auto-advance)
-        nextBtn.style.display = 'none';
+        // Show next button for spiritual gifts questions (1-32)
+        nextBtn.style.display = 'block';
+        nextBtn.textContent = currentQuestionIndex === allQuestions.length - 1 ? 'Finish' : 'Next';
+        // Enable if they've made at least one selection or want to skip
+        const hasSelection = answers[currentQuestionIndex] && answers[currentQuestionIndex].length > 0;
+        nextBtn.disabled = false; // Always allow advancing (even with no selection)
     }
 }
 
@@ -1719,100 +1683,4 @@ function showSubmissionSuccess() {
         animation: slideIn 0.3s ease-out;
         box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
     `;
-    successMsg.textContent = '✓';
-    document.body.appendChild(successMsg);
-    
-    setTimeout(() => {
-        if (successMsg.parentNode) {
-            successMsg.remove();
-        }
-    }, 3000);
-}
-
-function showSubmissionError(message) {
-    const errorMsg = document.createElement('div');
-    errorMsg.style.cssText = `
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        background: #e74c3c;
-        color: white;
-        padding: 15px 20px;
-        border-radius: 8px;
-        font-size: 14px;
-        z-index: 1000;
-        animation: slideIn 0.3s ease-out;
-        max-width: 300px;
-        box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
-    `;
-    errorMsg.innerHTML = `
-        <strong>Submission Error</strong><br>
-        ${message}
-    `;
-    document.body.appendChild(errorMsg);
-    
-    setTimeout(() => {
-        if (errorMsg.parentNode) {
-            errorMsg.remove();
-        }
-    }, 8000);
-}
-
-function restartAssessment() {
-    currentQuestionIndex = 0;
-    answers = [];
-    userInfo = {};
-    
-    document.getElementById('results').classList.remove('show');
-    document.getElementById('userForm').style.display = 'block';
-    document.getElementById('intro').style.display = 'none';
-    document.getElementById('questionContainer').style.display = 'none';
-    
-    document.getElementById('userInfoForm').reset();
-}
-
-// Phone number formatting function
-function formatPhoneNumber(value) {
-    // Remove all non-digit characters
-    const numericValue = value.replace(/\D/g, '');
-    
-    // Apply formatting based on length
-    if (numericValue.length <= 3) {
-        return numericValue;
-    } else if (numericValue.length <= 6) {
-        return `${numericValue.slice(0, 3)}-${numericValue.slice(3)}`;
-    } else {
-        return `${numericValue.slice(0, 3)}-${numericValue.slice(3, 6)}-${numericValue.slice(6, 10)}`;
-    }
-}
-
-// Validate phone number format
-function isValidPhoneNumber(phone) {
-    // Check if it matches xxx-xxx-xxxx format and has exactly 10 digits
-    const phoneRegex = /^\d{3}-\d{3}-\d{4}$/;
-    return phoneRegex.test(phone);
-}
-
-// Initialize
-document.addEventListener('DOMContentLoaded', function() {
-    updateNavigation();
-    
-    // Set up phone number formatting
-    const phoneInput = document.getElementById('phone');
-    if (phoneInput) {
-        phoneInput.addEventListener('input', function(e) {
-            const formattedValue = formatPhoneNumber(e.target.value);
-            e.target.value = formattedValue;
-        });
-        
-        // Also format on paste
-        phoneInput.addEventListener('paste', function(e) {
-            setTimeout(() => {
-                const formattedValue = formatPhoneNumber(e.target.value);
-                e.target.value = formattedValue;
-            }, 0);
-        });
-    }
-});
-</script>
-</html>
+    successMsg.textContent = '✓
