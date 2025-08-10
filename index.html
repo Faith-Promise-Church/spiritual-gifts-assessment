@@ -921,6 +921,10 @@ function displayResults(scores, aiSummary) {
   document.getElementById('loadingDiv').style.display = 'none';
   document.getElementById('finalResults').style.display = 'block';
 
+  // Add line breaks before every "Ministry Area:"
+  const prettySummary = aiSummary
+    .replace(/(<b>)?Ministry Area:(<\/b>)?/gi, '<br><br><b>Ministry Area:</b>');
+
   const resultCard = document.getElementById('resultCard');
   const giftsListHtml = scores.gifts.map((gift, index) => `
     <div class="gift-item">
@@ -935,10 +939,12 @@ function displayResults(scores, aiSummary) {
       <div class="result-type">${scores.gifts[0] ? scores.gifts[0][0] : 'Serving'}</div>
       <div class="result-name">Your Primary Spiritual Gift</div>
     </div>
+
     <div class="gifts-list">${giftsListHtml}</div>
+
     <div class="ai-summary">
       <h4>Your Personalized Ministry Assessment</h4>
-      <div>${aiSummary}</div>
+      <div>${prettySummary}</div>
     </div>
   `;
 }
